@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Interactive 2026 assigned off-day calendar for Beaumont XEN1B through XEN8B jobs.">
-  <title>2026 XEN Off-Day Calendar | Rail Labor Resource Center</title>
+  <meta name="description" content="Interactive 2026 assigned off-day calendar showing Beaumont XEN1B through XEN8B together.">
+  <title>2026 XEN Off-Day Matrix | Rail Labor Resource Center</title>
   <link rel="stylesheet" href="../../../styles.css">
   <link rel="stylesheet" href="calendar.css">
 </head>
@@ -60,16 +60,17 @@
           <span>2026 XEN Off Days</span>
         </nav>
         <p class="eyebrow">Beaumont extra board schedule</p>
-        <h1>2026 XEN Off-Day Calendar</h1>
-        <p>Select an XEN job to view its assigned off days throughout 2026. Gold dates are scheduled rest days under the 6-on / 2-off matrix.</p>
+        <h1>2026 XEN Off-Day Matrix</h1>
+        <p>Every XEN turn spot is shown together by month. Gold boxes are assigned rest days under the 6-on / 2-off matrix.</p>
       </div>
     </section>
 
     <section class="calendar-toolbar-wrap" aria-label="Calendar controls">
       <div class="container calendar-toolbar">
         <div class="job-picker-wrap">
-          <label for="job-picker">Select assignment</label>
+          <label for="job-picker">Calendar view</label>
           <select id="job-picker">
+            <option value="ALL">All XEN turn spots</option>
             <option value="XEN1B">XEN1B — Matrix Turn 1</option>
             <option value="XEN5B">XEN5B — Matrix Turn 5</option>
             <option value="XEN4B">XEN4B — Matrix Turn 4</option>
@@ -89,20 +90,20 @@
     </section>
 
     <section class="section calendar-section">
-      <div class="container">
+      <div class="container calendar-container">
         <div class="calendar-summary">
           <div>
-            <p class="eyebrow dark">Selected assignment</p>
-            <h2 id="selected-job">XEN1B</h2>
-            <p id="selected-description">Matrix Turn 1 • 6 days on, 2 assigned days off</p>
+            <p class="eyebrow dark" id="summary-kicker">Complete schedule</p>
+            <h2 id="selected-job">All XEN Turn Spots</h2>
+            <p id="selected-description">XEN1B through XEN8B shown together for all twelve months</p>
           </div>
           <div class="summary-stats" aria-live="polite">
             <div>
-              <strong id="off-day-total">91</strong>
-              <span>off days in 2026</span>
+              <strong id="primary-stat">8</strong>
+              <span id="primary-stat-label">turn spots shown</span>
             </div>
             <div>
-              <strong>6 & 2</strong>
+              <strong>6 &amp; 2</strong>
               <span>work/rest cycle</span>
             </div>
           </div>
@@ -111,13 +112,14 @@
         <div class="legend" aria-label="Calendar legend">
           <span><i class="legend-swatch off-swatch" aria-hidden="true"></i> Assigned off day</span>
           <span><i class="legend-swatch today-swatch" aria-hidden="true"></i> Today</span>
+          <span class="mobile-hint">Swipe a month sideways to see every date.</span>
         </div>
 
         <noscript>
           <div class="calendar-notice">JavaScript must be enabled to generate the calendar.</div>
         </noscript>
 
-        <div id="calendar-grid" class="year-calendar" aria-live="polite"></div>
+        <div id="calendar-grid" class="all-turn-calendar" aria-live="polite"></div>
 
         <section class="source-panel" aria-labelledby="source-heading">
           <div>

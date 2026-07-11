@@ -1,7 +1,8 @@
 # MidSouth Agreement
 
-Upload the BLET MidSouth Scheduled Rules Agreement PDF to this folder using the filename:
+This folder contains the BLET MidSouth Scheduled Rules Agreement PDF and its browser-viewer page.
 
-`BLET-MidSouth-Scheduled-Rules-Agreement.pdf`
+- Browser reader: `index.html`
+- Source PDF: `MS AGreement.pdf`
 
-Once the PDF is present, the Contracts & Agreements webpage can link to it for in-browser viewing and direct download.
+The download button presents the file as `BLET-MidSouth-Scheduled-Rules-Agreement-2003.pdf` for a cleaner saved filename.

@@ -3,19 +3,64 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A practical library of railroad work agreements, schedules, safety references, forms, and employee resources.">
+  <meta name="description" content="Railroad work agreements, job schedules, calendars, and employee reference materials.">
   <title>Rail Labor Resource Center</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .home-directory {
+      min-height: calc(100vh - 242px);
+      padding: 56px 0 76px;
+      background: var(--cream);
+    }
+
+    .home-heading {
+      max-width: 760px;
+      margin-bottom: 38px;
+    }
+
+    .home-heading h1 {
+      margin: 0;
+      color: var(--navy-900);
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: clamp(2.7rem, 7vw, 4.8rem);
+      font-weight: 900;
+      line-height: .98;
+      letter-spacing: -.035em;
+    }
+
+    .home-heading p:not(.eyebrow) {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 1.06rem;
+    }
+
+    .home-resource-grid {
+      max-width: 900px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .home-resource-grid .resource-card {
+      min-height: 290px;
+    }
+
+    .home-note {
+      max-width: 900px;
+      margin: 28px 0 0;
+      padding-top: 20px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: .88rem;
+    }
+
+    @media (max-width: 700px) {
+      .home-directory { padding: 40px 0 56px; }
+      .home-resource-grid { grid-template-columns: 1fr; }
+      .home-resource-grid .resource-card { min-height: 250px; }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
-
-  <div class="utility-bar">
-    <div class="container utility-inner">
-      <span>Independent railroad work-resource library</span>
-      <a href="https://github.com/dkruse-rgb/Resources" target="_blank" rel="noopener">View repository</a>
-    </div>
-  </div>
 
   <header class="site-header">
     <div class="container header-inner">
@@ -40,150 +85,40 @@
 
       <nav id="primary-nav" class="primary-nav" aria-label="Main navigation">
         <a class="active" href="./">Home</a>
-        <a href="#resources">Resources</a>
         <a href="work-resources/schedules/">Schedules</a>
         <a href="work-resources/contract/">Contracts</a>
-        <a href="#about">About</a>
       </nav>
     </div>
   </header>
 
-  <main id="main-content">
-    <section class="hero">
-      <div class="rail-lines" aria-hidden="true"></div>
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">Agreements • Rights • Safety • Reference</p>
-          <h1>Knowledge is protection.</h1>
-          <p class="hero-lead">A straightforward place to find the documents and information railroad employees need—without digging through old emails, scattered folders, and broken links.</p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#resources">Browse resources</a>
-            <a class="button button-secondary" href="work-resources/schedules/">Open schedules</a>
-          </div>
-        </div>
+  <main id="main-content" class="home-directory">
+    <div class="container">
+      <header class="home-heading">
+        <p class="eyebrow dark">Work resource library</p>
+        <h1>Resources</h1>
+        <p>Job schedules, assigned off-day calendars, contracts, and agreements—organized in one place.</p>
+      </header>
 
-        <aside class="hero-panel" aria-label="Resource center highlights">
-          <div class="panel-kicker">Resource desk</div>
-          <h2>Built for the people doing the work.</h2>
-          <ul class="check-list">
-            <li>Mobile-friendly document access</li>
-            <li>Clear categories and plain-language labels</li>
-            <li>Direct links to original reference files</li>
-          </ul>
-        </aside>
+      <div class="resource-grid home-resource-grid">
+        <a class="resource-card featured" href="work-resources/schedules/">
+          <span class="card-number">01</span>
+          <span class="card-icon" aria-hidden="true">▦</span>
+          <h3>Schedules & Assignments</h3>
+          <p>Beaumont job listings, daily crew demand, and the 2026 XEN Spots 1–9 off-day calendar.</p>
+          <span class="card-link">Open schedules <span aria-hidden="true">→</span></span>
+        </a>
+
+        <a class="resource-card" href="work-resources/contract/">
+          <span class="card-number">02</span>
+          <span class="card-icon" aria-hidden="true">§</span>
+          <h3>Contracts & Agreements</h3>
+          <p>Open railroad agreements in the browser, including the BLET MidSouth Scheduled Rules Agreement.</p>
+          <span class="card-link" style="color:var(--red-700)">Open contracts <span aria-hidden="true">→</span></span>
+        </a>
       </div>
-    </section>
 
-    <section class="notice-strip" aria-label="Important notice">
-      <div class="container notice-inner">
-        <strong>Keep the record.</strong>
-        <span>Save agreements, notices, schedules, and supporting documents before they disappear from company systems.</span>
-      </div>
-    </section>
-
-    <section id="resources" class="section resources-section">
-      <div class="container">
-        <div class="section-heading split-heading">
-          <div>
-            <p class="eyebrow dark">Resource library</p>
-            <h2>Find what you need</h2>
-            <p>Choose a category below. More sections and files can be added as the library grows.</p>
-          </div>
-          <label class="resource-search">
-            <span class="sr-only">Search resource categories</span>
-            <input id="resource-search" type="search" placeholder="Search resources…" autocomplete="off">
-          </label>
-        </div>
-
-        <div class="resource-grid" id="resource-grid">
-          <a class="resource-card featured" href="work-resources/contract/" data-search="contracts agreements memoranda arbitration amendments side letters">
-            <span class="card-number">01</span>
-            <span class="card-icon" aria-hidden="true">§</span>
-            <h3>Contracts & Agreements</h3>
-            <p>Collective bargaining agreements, amendments, side letters, memoranda, and arbitration materials.</p>
-            <span class="card-link">Open library <span aria-hidden="true">→</span></span>
-          </a>
-
-          <a class="resource-card" href="work-resources/schedules/" data-search="schedules assignments jobs crew beaumont port arthur mossville leesville xen ado calendar off days extra board">
-            <span class="card-number">02</span>
-            <span class="card-icon" aria-hidden="true">▦</span>
-            <h3>Schedules & Assignments</h3>
-            <p>Browse the Beaumont job listings and the 2026 XEN Spots 1–9 assigned off-day calendar.</p>
-            <span class="card-link" style="color:var(--red-700)">Open schedules <span aria-hidden="true">→</span></span>
-          </a>
-
-          <article class="resource-card coming-soon" data-search="claims pay penalties examples time money grievance">
-            <span class="card-number">03</span>
-            <span class="card-icon" aria-hidden="true">$</span>
-            <h3>Claims & Pay</h3>
-            <p>Claim references, examples, time-slip support, pay provisions, and commonly used arguments.</p>
-            <span class="status-pill">Planned</span>
-          </article>
-
-          <article class="resource-card coming-soon" data-search="safety fra osha heat rules gcor equipment operating">
-            <span class="card-number">04</span>
-            <span class="card-icon" aria-hidden="true">⚠</span>
-            <h3>Safety & Operating Rules</h3>
-            <p>FRA, OSHA, operating-rule, heat-safety, equipment, and good-faith challenge references.</p>
-            <span class="status-pill">Planned</span>
-          </article>
-
-          <article class="resource-card coming-soon" data-search="forms templates handouts printable letters">
-            <span class="card-number">05</span>
-            <span class="card-icon" aria-hidden="true">▤</span>
-            <h3>Forms & Handouts</h3>
-            <p>Reusable forms, printable guides, templates, checklists, and employee handouts.</p>
-            <span class="status-pill">Planned</span>
-          </article>
-
-          <article class="resource-card coming-soon" data-search="contacts union representatives phone email useful links">
-            <span class="card-number">06</span>
-            <span class="card-icon" aria-hidden="true">☎</span>
-            <h3>Contacts & Links</h3>
-            <p>Useful agencies, union contacts, benefit resources, reporting channels, and reference links.</p>
-            <span class="status-pill">Planned</span>
-          </article>
-        </div>
-        <p id="no-results" class="no-results" hidden>No matching resource categories found.</p>
-      </div>
-    </section>
-
-    <section id="quick-links" class="section quick-section">
-      <div class="container quick-grid">
-        <div class="section-heading light-heading">
-          <p class="eyebrow">Quick access</p>
-          <h2>Start with the essentials</h2>
-          <p>This area is the fast lane for the files and tools people reach for most often.</p>
-        </div>
-        <div class="quick-links">
-          <a href="work-resources/schedules/beaumont-assignment-schedule/">
-            <span>Job listings</span>
-            <strong>Beaumont assignment schedule</strong>
-          </a>
-          <a href="work-resources/schedules/xen-ado-calendar-2026/">
-            <span>2026 schedule</span>
-            <strong>XEN off-day calendar</strong>
-          </a>
-          <a href="work-resources/contract/">
-            <span>Contract library</span>
-            <strong>Browse agreements</strong>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="section about-section">
-      <div class="container about-grid">
-        <div>
-          <p class="eyebrow dark">About the project</p>
-          <h2>A practical resource—not an official union publication.</h2>
-        </div>
-        <div class="about-copy">
-          <p>This site is being assembled as an independent document library for railroad employees. It is designed to make work resources easier to find, understand, and share.</p>
-          <p>Documents should be checked against current agreements, official notices, and applicable law before being relied upon. The site can later be expanded with summaries, searchable indexes, location-specific pages, and direct downloads.</p>
-        </div>
-      </div>
-    </section>
+      <p class="home-note">Independent reference library. Verify documents and schedules against current agreements, notices, and local instructions.</p>
+    </div>
   </main>
 
   <footer class="site-footer">

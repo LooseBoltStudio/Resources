@@ -2,10 +2,12 @@
   const YEAR = 2026;
   const DAY_MS = 24 * 60 * 60 * 1000;
   const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const LONG_WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const MONTHS = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
+  const DISPLAY_ORDER = ['XEN1B', 'XEN5B', 'XEN4B', 'XEN6B', 'XEN2B', 'XEN3B', 'XEN7B', 'XEN8B'];
 
   const JOBS = {
     XEN1B: { turn: 1, anchor: '2026-01-05' },
@@ -24,6 +26,7 @@
   const selectedDescription = document.querySelector('#selected-description');
   const offDayTotal = document.querySelector('#off-day-total');
   const printButton = document.querySelector('#print-calendar');
+  const csvLink = document.querySelector('a[href="xen-ado-2026.csv"]');
 
   if (!picker || !grid) return;
 
@@ -140,6 +143,23 @@
     return month;
   }
 
+  function buildCsvDownload() {
+    if (!csvLink) return;
+
+    const rows = [['job_id', 'matrix_turn', 'date', 'day_of_week', 'month']];
+    DISPLAY_ORDER.forEach((jobId) => {
+      getOffDays(jobId).forEach(({ month, day, key }) => {
+        const weekday = LONG_WEEKDAYS[new Date(YEAR, month, day).getDay()];
+        rows.push([jobId, JOBS[jobId].turn, key, weekday, MONTHS[month]]);
+      });
+    });
+
+    const csv = rows.map((row) => row.join(',')).join('\n');
+    const blobUrl = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    csvLink.href = blobUrl;
+    csvLink.download = 'xen-ado-off-days-2026.csv';
+  }
+
   function render(jobId) {
     const job = JOBS[jobId] || JOBS.XEN1B;
     grid.replaceChildren();
@@ -164,6 +184,7 @@
     : 'XEN1B';
 
   picker.value = initialJob;
+  buildCsvDownload();
   render(initialJob);
 
   picker.addEventListener('change', () => render(picker.value));

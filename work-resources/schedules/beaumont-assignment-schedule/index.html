@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Beaumont Division railroad job listings and weekly assignment schedules grouped by Beaumont, Port Arthur, Mossville, and Leesville.">
+  <title>Beaumont Assignment Schedule | Rail Labor Resource Center</title>
+  <link rel="stylesheet" href="../../../styles.css">
+  <link rel="stylesheet" href="schedule.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <div class="utility-bar">
+    <div class="container utility-inner">
+      <span>Beaumont Division • Effective July 13, 2026</span>
+      <a href="https://github.com/dkruse-rgb/Resources/tree/main/work-resources/schedules/beaumont-assignment-schedule" target="_blank" rel="noopener">View source folder</a>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../../../" aria-label="Rail Labor Resource Center home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 72 72" role="img">
+            <circle cx="36" cy="36" r="33" fill="none" stroke="currentColor" stroke-width="4"/>
+            <path d="M20 44h32M24 52h24M26 39V22h20v17M31 22v-6h10v6M30 31h4m4 0h4" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 58 36 47 50 58" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong>Rail Labor</strong>
+          <span>Resource Center</span>
+        </span>
+      </a>
+
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="primary-nav">
+        <span></span><span></span><span></span>
+        <span class="sr-only">Open navigation</span>
+      </button>
+
+      <nav id="primary-nav" class="primary-nav" aria-label="Main navigation">
+        <a href="../../../">Home</a>
+        <a href="../../../#resources">Resources</a>
+        <a class="active" href="../">Schedules</a>
+        <a href="../../contract/">Contracts</a>
+        <a href="../../../#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="page-hero schedule-hero">
+      <div class="container">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a href="../../../">Home</a>
+          <span aria-hidden="true">/</span>
+          <a href="../">Schedules</a>
+          <span aria-hidden="true">/</span>
+          <span>Beaumont Assignment Schedule</span>
+        </nav>
+        <p class="eyebrow">Job listings and weekly assignments</p>
+        <h1>Beaumont Division Schedule</h1>
+        <p>Twenty jobs grouped in the requested order: Beaumont, Port Arthur, Mossville, and Leesville. The tables include job IDs, craft, crew size, starting location, daily start times, off days, and notes.</p>
+      </div>
+    </section>
+
+    <section class="schedule-toolbar" aria-label="Schedule tools">
+      <div class="container">
+        <div class="schedule-links">
+          <a class="schedule-link primary" href="../xen-ado-calendar-2026/">XEN Off-Day Calendar</a>
+          <a class="schedule-link" href="jobs.csv" download>Download Jobs CSV</a>
+          <button class="schedule-link" type="button" onclick="window.print()">Print / Save PDF</button>
+        </div>
+        <span style="color:#d7e0e9;font-size:.8rem">Effective 00:01 Monday, July 13, 2026</span>
+      </div>
+    </section>
+
+    <section class="section schedule-main">
+      <div class="container">
+        <div class="schedule-intro">
+          <div>
+            <p class="eyebrow dark">Assignment directory</p>
+            <h2>Jobs by location</h2>
+            <p>The schedule stays in the established order of Beaumont → Port Arthur → Mossville → Leesville. On a phone, the job ID remains pinned on the left while the table scrolls sideways.</p>
+            <nav class="location-jumps" aria-label="Jump to location">
+              <a href="#beaumont">Beaumont</a>
+              <a href="#port-arthur">Port Arthur</a>
+              <a href="#mossville">Mossville</a>
+              <a href="#leesville">Leesville</a>
+            </nav>
+          </div>
+
+          <div class="schedule-search-panel">
+            <label for="job-search">Search schedule</label>
+            <input id="job-search" type="search" placeholder="Job ID, location, craft, time…" autocomplete="off">
+            <small id="visible-job-count">Loading jobs…</small>
+          </div>
+        </div>
+
+        <section class="demand-section" aria-labelledby="demand-heading">
+          <p class="eyebrow dark">Daily staffing</p>
+          <h2 id="demand-heading">Crew demand</h2>
+          <div id="summary" class="demand-grid"></div>
+        </section>
+
+        <div id="schedule" aria-live="polite"></div>
+
+        <aside class="schedule-note">
+          <strong>Reference note:</strong> This page reproduces the schedule data previously published in the Junk repository. Check later notices, abolishments, establishment changes, and local instructions before treating any assignment as current.
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <strong>Rail Labor Resource Center</strong>
+        <span>Organized information for railroad workers.</span>
+      </div>
+      <div class="footer-meta">
+        <span>Independent resource library</span>
+        <span id="copyright-year"></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../../script.js"></script>
+  <script src="schedule.js"></script>
+</body>
+</html>

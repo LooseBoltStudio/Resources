@@ -48,7 +48,7 @@
 }
 
 .job-picker-wrap select {
-  min-width: 265px;
+  min-width: 285px;
   min-height: 46px;
   padding: 0 42px 0 14px;
   color: var(--navy-950);
@@ -103,7 +103,7 @@
   margin: 0;
   color: var(--navy-900);
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(3rem, 7vw, 5rem);
+  font-size: clamp(2.7rem, 7vw, 5rem);
   line-height: .95;
 }
 
@@ -179,6 +179,217 @@
   border: 3px solid var(--red-600);
 }
 
+.mobile-hint {
+  display: none !important;
+  color: var(--red-700);
+}
+
+/* All-turn matrix view */
+.all-turn-calendar {
+  display: grid;
+  gap: 28px;
+}
+
+.matrix-month {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #d8d3c8;
+  box-shadow: 0 9px 24px rgba(7, 21, 38, .07);
+  break-inside: avoid;
+}
+
+.matrix-month-heading {
+  min-height: 67px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 18px;
+  color: #fff;
+  background: var(--navy-900);
+  border-bottom: 4px solid var(--gold-500);
+}
+
+.matrix-month-heading h3 {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.matrix-month-heading span {
+  color: #dce4eb;
+  font-size: .72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+
+.matrix-scroll {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-color: var(--gold-500) #e8e3d9;
+  scrollbar-width: thin;
+}
+
+.matrix-scroll:focus {
+  outline: 3px solid rgba(168, 39, 45, .4);
+  outline-offset: -3px;
+}
+
+.turn-matrix {
+  width: 100%;
+  min-width: 1040px;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  font-size: .72rem;
+}
+
+.turn-matrix th,
+.turn-matrix td {
+  height: 38px;
+  padding: 0;
+  text-align: center;
+  border-right: 1px solid #e2ddd4;
+  border-bottom: 1px solid #e2ddd4;
+}
+
+.turn-matrix thead th {
+  height: 45px;
+  color: var(--navy-900);
+  background: #eee9df;
+  font-weight: 900;
+}
+
+.turn-matrix .assignment-column,
+.turn-matrix .job-row-header {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  width: 116px;
+  min-width: 116px;
+  max-width: 116px;
+  text-align: left;
+  border-right: 2px solid var(--navy-800);
+}
+
+.turn-matrix .assignment-column {
+  z-index: 5;
+  padding-left: 12px;
+  color: #fff;
+  background: var(--navy-800);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.turn-matrix .date-column {
+  width: 29px;
+  min-width: 29px;
+}
+
+.date-column span,
+.date-column small {
+  display: block;
+  line-height: 1;
+}
+
+.date-column span {
+  font-size: .76rem;
+}
+
+.date-column small {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: .52rem;
+}
+
+.turn-matrix .weekend {
+  background: #f8f4eb;
+}
+
+.turn-matrix .today-column {
+  color: #fff;
+  background: var(--red-600);
+}
+
+.turn-matrix .today-column small {
+  color: #fff;
+}
+
+.turn-matrix .job-row-header {
+  background: #fff;
+}
+
+.turn-matrix tbody tr:nth-child(even) .job-row-header {
+  background: #f7f4ed;
+}
+
+.turn-focus {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  color: var(--navy-900);
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.turn-focus:hover,
+.turn-focus:focus-visible {
+  color: #fff;
+  background: var(--red-600);
+  outline: none;
+}
+
+.turn-focus strong {
+  font-size: .8rem;
+}
+
+.turn-focus span {
+  color: var(--muted);
+  font-size: .56rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.turn-focus:hover span,
+.turn-focus:focus-visible span {
+  color: #fff;
+}
+
+.matrix-day {
+  width: 29px;
+  min-width: 29px;
+  color: transparent;
+  background: #fff;
+  font-size: .48rem;
+  font-weight: 900;
+  letter-spacing: -.02em;
+}
+
+.turn-matrix tbody tr:nth-child(even) .matrix-day:not(.off-day) {
+  background: #fcfbf8;
+}
+
+.matrix-day.off-day {
+  color: var(--navy-950);
+  background: var(--gold-500);
+  box-shadow: inset 0 -4px 0 rgba(7, 21, 38, .16);
+}
+
+.matrix-day.today {
+  outline: 3px solid var(--red-600);
+  outline-offset: -3px;
+}
+
+/* Single-assignment calendar view */
 .year-calendar {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -321,6 +532,12 @@
   margin-top: 16px;
 }
 
+@media (max-width: 1100px) {
+  .turn-matrix {
+    min-width: 1000px;
+  }
+}
+
 @media (max-width: 980px) {
   .calendar-toolbar-wrap { top: 76px; }
   .year-calendar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -344,7 +561,11 @@
   .toolbar-actions { display: grid; grid-template-columns: 1fr 1fr; }
   .calendar-summary { gap: 22px; }
   .summary-stats { width: 100%; }
-  .summary-stats > div { min-width: 0; flex: 1; }
+  .summary-stats > div { min-width: 0; flex: 1; padding: 15px; }
+  .mobile-hint { display: inline-flex !important; flex-basis: 100%; }
+  .matrix-month-heading { align-items: flex-start; flex-direction: column; gap: 6px; }
+  .matrix-scroll { margin-right: -16px; }
+  .turn-matrix { min-width: 1020px; }
   .year-calendar { grid-template-columns: 1fr; }
   .month-card { max-width: 520px; width: 100%; margin-inline: auto; }
   .calendar-day { min-height: 45px; }
@@ -352,7 +573,7 @@
 }
 
 @media print {
-  @page { size: landscape; margin: .35in; }
+  @page { size: landscape; margin: .3in; }
 
   .utility-bar,
   .site-header,
@@ -377,27 +598,90 @@
   }
 
   .page-hero .container {
-    padding: 0 0 10px;
+    padding: 0 0 8px;
   }
 
   .calendar-hero::after { display: none; }
 
   .page-hero h1 {
     color: #000;
-    font-size: 26pt;
+    font-size: 23pt;
   }
 
   .page-hero .eyebrow {
     color: #000;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
 
-  .section { padding: 12px 0 0; }
+  .section { padding: 8px 0 0; }
   .container { width: 100%; max-width: none; }
-  .calendar-summary { margin-bottom: 10px; }
-  .calendar-summary h2 { color: #000; font-size: 24pt; }
-  .calendar-summary p { color: #000 !important; margin-top: 4px !important; }
+  .calendar-summary { margin-bottom: 7px; }
+  .calendar-summary h2 { color: #000; font-size: 20pt; }
+  .calendar-summary p { color: #000 !important; margin-top: 3px !important; }
   .summary-stats { display: none; }
+
+  .all-turn-calendar {
+    gap: 8px;
+  }
+
+  .matrix-month {
+    box-shadow: none;
+    border: 1px solid #333;
+    break-inside: avoid;
+  }
+
+  .matrix-month-heading {
+    min-height: 0;
+    padding: 4px 7px;
+    color: #000;
+    background: #eee !important;
+    border-bottom: 1px solid #000;
+  }
+
+  .matrix-month-heading h3 { font-size: 10pt; }
+  .matrix-month-heading span { color: #000; font-size: 5.5pt; }
+  .matrix-scroll { overflow: visible; }
+
+  .turn-matrix {
+    width: 100%;
+    min-width: 0;
+    font-size: 5pt;
+  }
+
+  .turn-matrix th,
+  .turn-matrix td {
+    height: 15px;
+    border-color: #aaa;
+  }
+
+  .turn-matrix .assignment-column,
+  .turn-matrix .job-row-header {
+    position: static;
+    width: 64px;
+    min-width: 64px;
+    max-width: 64px;
+  }
+
+  .turn-matrix .assignment-column {
+    color: #000;
+    background: #ddd !important;
+    font-size: 5pt;
+  }
+
+  .turn-focus { padding: 0 3px; }
+  .turn-focus strong { font-size: 5.5pt; }
+  .turn-focus span { font-size: 4pt; }
+  .date-column span { font-size: 5pt; }
+  .date-column small { display: none; }
+  .matrix-day { font-size: 0; }
+
+  .matrix-day.off-day {
+    background: #bbb !important;
+    border: 1px solid #000;
+    box-shadow: none;
+  }
+
+  .matrix-day.today { outline: none; }
 
   .year-calendar {
     grid-template-columns: repeat(4, 1fr);
@@ -421,21 +705,8 @@
   .month-heading p { color: #000; font-size: 6.5pt; margin-top: 2px; }
   .weekday-row span { padding: 3px 0; font-size: 5.5pt; }
   .month-days { gap: 1px; padding: 3px; }
-
-  .calendar-day {
-    min-height: 21px;
-    color: #000;
-    border-color: #ccc;
-    font-size: 7.5pt;
-  }
-
-  .calendar-day.off-day {
-    color: #000;
-    background: #ddd !important;
-    border: 2px solid #000;
-    box-shadow: none;
-  }
-
+  .calendar-day { min-height: 21px; color: #000; border-color: #ccc; font-size: 7.5pt; }
+  .calendar-day.off-day { color: #000; background: #ddd !important; border: 2px solid #000; box-shadow: none; }
   .calendar-day.off-day::after { display: none; }
   .calendar-day.today { outline: none; }
 }

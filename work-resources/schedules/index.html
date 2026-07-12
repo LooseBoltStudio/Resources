@@ -6,6 +6,12 @@
   <meta name="description" content="Railroad job schedules, assignment listings, and assigned off-day calendars for the Beaumont Division.">
   <title>Schedules & Assignments | Railroad Workbench</title>
   <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .schedule-library-section { padding: 48px 0 72px; }
+    @media (max-width: 700px) {
+      .schedule-library-section { padding: 30px 0 54px; }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -40,28 +46,15 @@
   </header>
 
   <main id="main-content">
-    <section class="page-hero">
-      <div class="container">
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-          <a href="../../">Home</a>
-          <span aria-hidden="true">/</span>
-          <span>Schedules & Assignments</span>
-        </nav>
-        <p class="eyebrow">Schedule library</p>
-        <h1>Schedules & Assignments</h1>
-        <p>Job listings, weekly assignments, crew-demand totals, and assigned off-day calendars kept together in one organized section.</p>
-      </div>
-    </section>
-
-    <section class="section resources-section">
+    <section class="section resources-section schedule-library-section">
       <div class="container">
         <div class="section-heading">
-          <p class="eyebrow dark">Available tools</p>
-          <h2>Beaumont schedule resources</h2>
-          <p>Choose the weekly job listing or the XEN 6&2 off-day matrix. Both pages are mobile-friendly, printable, and include downloadable CSV data.</p>
+          <p class="eyebrow dark">Schedule library</p>
+          <h2>Schedules & Assignments</h2>
+          <p>Job listings, weekly assignments, crew-demand totals, and assigned off-day calendars kept together in one organized section.</p>
         </div>
 
-        <div class="resource-grid" style="margin-top:42px">
+        <div class="resource-grid" style="margin-top:36px">
           <a class="resource-card featured" href="beaumont-assignment-schedule/" data-search="beaumont port arthur mossville leesville jobs assignments crew schedule july 2026">
             <span class="card-number">01</span>
             <span class="card-icon" aria-hidden="true">▦</span>
@@ -85,10 +78,10 @@
       <div class="container about-grid">
         <div>
           <p class="eyebrow dark">Organization</p>
-          <h2>One repository, one schedule library.</h2>
+          <h2>One schedule library.</h2>
         </div>
         <div class="about-copy">
-          <p>The Beaumont job listings and XEN calendar are stored together in this Resources repository.</p>
+          <p>The Beaumont job listings and XEN calendar are stored together so they are easy to find and update.</p>
           <p>The source data remains separated into clear folders, making it easier to update one schedule without disturbing the rest of the site.</p>
         </div>
       </div>

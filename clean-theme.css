@@ -1,0 +1,420 @@
+:root {
+  --navy-950: #17191b;
+  --navy-900: #202326;
+  --navy-800: #35393d;
+  --blue-700: #555b60;
+  --gold-500: #b9bec2;
+  --gold-300: #e0e3e5;
+  --red-600: #474b4f;
+  --red-700: #292c2f;
+  --cream: #efeeea;
+  --paper: #faf9f6;
+  --ink: #1c1e20;
+  --muted: #60656a;
+  --line: #b9bec2;
+  --white: #ffffff;
+  --shadow: 0 7px 22px rgba(0, 0, 0, .08);
+}
+
+body {
+  color: var(--ink);
+  background: var(--paper);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3,
+.hero h1,
+.section-heading h2,
+.about-section h2,
+.page-hero h1,
+.resource-card h3,
+.library-sidebar h2,
+.library-main h2,
+.empty-state h3,
+.footer-brand strong,
+.schedule-intro h2,
+.demand-section h2,
+.location-heading h2,
+.calendar-summary h2,
+.matrix-month-heading h3,
+.month-heading h3 {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.site-header {
+  background: rgba(250, 249, 246, .98);
+  border-bottom: 1px solid #c8cccf;
+  box-shadow: none;
+}
+
+.header-inner {
+  min-height: 76px;
+}
+
+.brand {
+  gap: 10px;
+  color: var(--ink);
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  color: var(--ink);
+}
+
+.brand-copy {
+  display: flex;
+  align-items: baseline;
+  gap: .3em;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.brand-copy strong,
+.brand-copy span {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.primary-nav a {
+  padding: 28px 13px 24px;
+  color: #33373a;
+  font-size: .92rem;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.primary-nav a::after {
+  bottom: 16px;
+  height: 2px;
+  background: #4d5155;
+}
+
+.menu-button {
+  background: #f7f6f2;
+  border-color: #aeb3b7;
+  border-radius: 6px;
+}
+
+.menu-button span:not(.sr-only) {
+  background: var(--ink);
+}
+
+.home-directory,
+.resources-section,
+.schedule-main,
+.calendar-section {
+  background: var(--cream);
+}
+
+.home-heading h1 {
+  max-width: 720px;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+}
+
+.eyebrow.dark {
+  color: #62676b;
+}
+
+.resource-grid {
+  gap: 18px;
+}
+
+.resource-card,
+.resource-card.featured {
+  color: var(--ink);
+  background: #fbfaf7;
+  border: 2px solid #b8bdc2;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, .07);
+}
+
+.resource-card:hover,
+.resource-card.featured:hover {
+  transform: translateY(-2px);
+  border-color: #555a5f;
+  box-shadow: 0 9px 24px rgba(0, 0, 0, .10);
+}
+
+.resource-card p,
+.resource-card.featured p {
+  color: #565b60;
+}
+
+.card-number {
+  display: none;
+}
+
+.card-icon {
+  width: 46px;
+  height: 46px;
+  color: #222528;
+  background: #e1e3e4;
+  border: 1px solid #c1c5c8;
+  font-size: 1.35rem;
+}
+
+.resource-card h3 {
+  margin-top: 24px;
+}
+
+.resource-card .card-link,
+.resource-card.featured .card-link {
+  color: #25282b !important;
+}
+
+.home-resource-grid .resource-card {
+  min-height: 250px;
+}
+
+.about-section {
+  display: none;
+}
+
+.site-footer {
+  color: #d2d5d7;
+  background: #1b1d1f;
+  border-top: 1px solid #35383b;
+}
+
+.footer-inner {
+  min-height: 72px;
+}
+
+.footer-brand {
+  display: block;
+}
+
+.footer-brand strong {
+  color: #f2f3f3;
+  font-size: .95rem;
+  font-weight: 700;
+}
+
+.footer-brand span,
+.footer-meta span:first-child {
+  display: none;
+}
+
+.footer-meta {
+  display: block;
+  color: #b7bbbe;
+  font-size: .82rem;
+  text-align: right;
+}
+
+.page-hero {
+  color: var(--ink);
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+.page-hero .container {
+  padding-block: 34px;
+}
+
+.page-hero h1 {
+  color: var(--ink);
+  font-size: clamp(2.2rem, 6vw, 3.7rem);
+}
+
+.page-hero p {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.page-hero .eyebrow {
+  color: #62676b;
+}
+
+.breadcrumbs {
+  margin-bottom: 16px;
+  color: #777c80;
+}
+
+.breadcrumbs a {
+  color: #35393d;
+}
+
+.schedule-toolbar,
+.calendar-toolbar-wrap,
+.agreement-toolbar {
+  background: #202326;
+  border-bottom: 1px solid #4b4f53;
+}
+
+.calendar-toolbar-wrap {
+  top: 76px;
+}
+
+.schedule-link.primary,
+.agreement-action.primary {
+  color: #1c1e20;
+  background: #e0e2e3;
+  border-color: #e0e2e3;
+}
+
+.schedule-link:hover,
+.calendar-action:hover,
+.agreement-action:hover {
+  color: #1c1e20;
+  background: #d1d4d6;
+  border-color: #d1d4d6;
+}
+
+.job-picker-wrap label {
+  color: #e0e2e3;
+}
+
+.section-heading h2,
+.schedule-intro h2,
+.calendar-summary h2 {
+  font-size: clamp(2.1rem, 5vw, 3.5rem);
+}
+
+.schedule-search-panel,
+.demand-card,
+.location-section,
+.summary-stats,
+.matrix-month,
+.month-card,
+.document-item {
+  background: #fbfaf7;
+  border-color: #b9bec2;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, .06);
+}
+
+.schedule-search-panel {
+  border-top: 3px solid #555a5f;
+}
+
+.location-jumps a {
+  color: #2d3033;
+  background: #e1e3e4;
+}
+
+.location-heading,
+.matrix-month-heading,
+.month-heading {
+  color: #ffffff;
+  background: #292c2f;
+  border-bottom: 1px solid #5b6064;
+}
+
+.location-heading > span,
+.matrix-month-heading span,
+.month-heading p {
+  color: #d4d7d9;
+}
+
+.library-sidebar {
+  background: #e8e7e3;
+  border-top: 3px solid #4d5155;
+}
+
+.document-item {
+  border-width: 2px;
+}
+
+.document-item:hover {
+  border-color: #555a5f;
+}
+
+.doc-type {
+  background: #363a3e;
+}
+
+.doc-action,
+.library-sidebar a {
+  color: #2e3134;
+}
+
+.off-cell,
+.matrix-day.off-day,
+.calendar-day.off-day {
+  color: #17191b !important;
+  background: #c9cdd0 !important;
+  box-shadow: none !important;
+}
+
+.off-swatch {
+  background: #c9cdd0;
+  border-color: #9da2a6;
+}
+
+.today-swatch,
+.matrix-day.today,
+.calendar-day.today {
+  border-color: #3d4145 !important;
+  outline-color: #3d4145 !important;
+}
+
+.turn-matrix .today-column {
+  background: #3d4145;
+}
+
+.turn-focus:hover,
+.turn-focus:focus-visible {
+  background: #3d4145;
+}
+
+.schedule-note,
+.agreement-note {
+  border-left-color: #555a5f;
+}
+
+@media (max-width: 980px) {
+  .primary-nav {
+    top: 76px;
+    background: #faf9f6;
+  }
+}
+
+@media (max-width: 700px) {
+  .header-inner {
+    min-height: 68px;
+  }
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .brand-copy strong,
+  .brand-copy span {
+    font-size: .88rem;
+  }
+
+  .primary-nav {
+    top: 68px;
+  }
+
+  .calendar-toolbar-wrap {
+    top: 68px;
+  }
+
+  .home-resource-grid .resource-card,
+  .resource-card {
+    min-height: 220px;
+  }
+
+  .footer-inner {
+    min-height: 64px;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-block: 0;
+  }
+
+  .footer-meta {
+    text-align: right;
+  }
+}

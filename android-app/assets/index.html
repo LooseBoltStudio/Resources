@@ -1132,7 +1132,7 @@ class Component extends DCLogic {
         const start = Math.max(0, first - 55), snippet = (start ? "…" : "") + item.text.slice(start, start + 180) + (item.text.length > start + 180 ? "…" : "");
         return { title: d.title, page: item.page, snippet, open: () => this.openSearchResult(item.docId, item.page) };
       }),
-      docCategoryChips: ["All", "Agreements", "Awards", "Schedules"].map(label => chip(label, this.state.docCategory === label, () => this.setState({ docCategory: label }))),
+      docCategoryChips: ["All", "Agreements", "Awards"].map(label => chip(label, this.state.docCategory === label, () => this.setState({ docCategory: label }))),
       librarySize: formatBytes(DOCS.reduce((sum, d) => sum + d.bytes, 0)) + " offline library",
       storageDocs: DOCS.map(d => ({ ...d, size: formatBytes(d.bytes) })),
       clearTemporaryData: () => this.clearTemporaryData(), storageStatus: this.state.storageStatus,

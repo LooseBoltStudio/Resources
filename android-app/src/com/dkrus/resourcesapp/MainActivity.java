@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
                     share.setType("text/plain");
                     share.putExtra(Intent.EXTRA_SUBJECT, title);
                     share.putExtra(Intent.EXTRA_TEXT, text);
-                    startActivity(Intent.createChooser(share, "Share assignment"));
+                    startActivity(Intent.createChooser(share, "Share from Railroad Resources"));
                 }
             });
         }

@@ -63,6 +63,13 @@ a:hover{color:var(--color-accent-800)}
 
 <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
 <div style="display:flex;flex-direction:column;gap:20px">
+<sc-if value="{{ showHomeNotice }}" hint-placeholder-val="{{ false }}">
+<div class="blueprint" onClick="{{ openHomeNotice }}" style="padding:11px 13px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;cursor:pointer;border-color:var(--color-accent)">
+<span style="width:8px;height:8px;border-radius:50%;background:var(--color-accent)"></span>
+<div><div style="font-family:var(--font-heading);font-size:17px">{{ homeNoticeTitle }}</div><div style="font-size:11px;line-height:1.4;opacity:.66">{{ homeNoticeText }}</div></div>
+<span style="color:var(--color-accent);font-size:18px">→</span>
+</div>
+</sc-if>
 <div class="blueprint" style="padding:13px 14px;display:flex;flex-direction:column;gap:10px">
 <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
 <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
@@ -365,12 +372,29 @@ a:hover{color:var(--color-accent-800)}
 
 <sc-if value="{{ isContracts }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:20px">
-<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">Select an agreement to open its reader. Direct PDF downloads stay available on each document.</div>
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">Browse by category or search inside every offline PDF. Search results open directly to the matching page.</div>
+<input value="{{ docSearchQuery }}" onInput="{{ changeDocSearch }}" placeholder="Search titles and PDF text" aria-label="Search file library" style="width:100%;box-sizing:border-box;min-height:42px;border:1px solid var(--color-divider);border-radius:8px;background:var(--color-bg);color:var(--color-text);padding:9px 11px;font:inherit">
+<div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:2px">
+<sc-for list="{{ docCategoryChips }}" as="c" hint-placeholder-count="4"><button class="btn btn-secondary" onClick="{{ c.pick }}" style="white-space:nowrap;min-height:34px;background:{{ c.bg }};color:{{ c.fg }};border-color:{{ c.bd }}">{{ c.label }}</button></sc-for>
+</div>
+<sc-if value="{{ isDocSearching }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:9px">
+<div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.58">{{ docSearchSummary }}</div>
+<sc-if value="{{ noDocSearchResults }}" hint-placeholder-val="{{ false }}"><div class="blueprint" style="padding:14px;font-size:12px;line-height:1.5">No matching pages found. Try fewer or more general words.</div></sc-if>
+<sc-for list="{{ docSearchResults }}" as="r" hint-placeholder-count="4">
+<div class="blueprint" onClick="{{ r.open }}" style="padding:12px;display:grid;grid-template-columns:1fr auto;gap:10px;cursor:pointer">
+<div><div style="font-family:var(--font-heading);font-size:16px">{{ r.title }}</div><div style="font-size:11px;line-height:1.45;opacity:.68;margin-top:3px">{{ r.snippet }}</div></div><span class="tag tag-outline">Page {{ r.page }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ showDocList }}" hint-placeholder-val="{{ true }}">
 <sc-for list="{{ docs }}" as="d" hint-placeholder-count="3">
 <div class="blueprint" onClick="{{ d.open }}" style="padding:13px 14px;display:flex;flex-direction:column;gap:7px;cursor:pointer">
 <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
 <div style="display:flex;align-items:center;gap:8px">
 <span class="tag tag-outline">PDF</span>
+<span class="tag tag-outline">{{ d.category }}</span>
 <span style="font-size:11px;color:color-mix(in srgb, var(--color-text) 55%, transparent)">{{ d.pages }} pages</span>
 <span style="flex:1"></span>
 <button class="btn btn-ghost" onClick="{{ d.toggleFavorite }}" aria-label="Favorite" style="font-size:20px;min-width:38px;min-height:34px;color:var(--color-accent)">{{ d.star }}</button>
@@ -381,6 +405,7 @@ a:hover{color:var(--color-accent-800)}
 <div style="font-size:12px;color:var(--color-accent-700)">Open in reader →</div>
 </div>
 </sc-for>
+</sc-if>
 </div>
 </sc-if>
 
@@ -465,6 +490,9 @@ a:hover{color:var(--color-accent-800)}
 <div class="blueprint" onClick="{{ goHelp }}" style="padding:14px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;cursor:pointer">
 <div><div style="font-family:var(--font-heading);font-size:20px">Help &amp; About</div><div style="font-size:11.5px;opacity:.66;margin-top:3px">Quick guide, data sources, privacy, and support</div></div><span style="font-size:20px;color:var(--color-accent)">→</span>
 </div>
+<div class="blueprint" onClick="{{ goStorage }}" style="padding:14px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;cursor:pointer">
+<div><div style="font-family:var(--font-heading);font-size:20px">Storage &amp; Downloads</div><div style="font-size:11.5px;opacity:.66;margin-top:3px">Offline library size and temporary-data controls</div></div><span style="font-size:20px;color:var(--color-accent)">→</span>
+</div>
 <div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:11px">
 <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
 <div><div style="font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.58">App updates</div><div style="font-family:var(--font-heading);font-size:20px;margin-top:3px">Version {{ currentVersion }}</div></div>
@@ -475,6 +503,27 @@ a:hover{color:var(--color-accent-800)}
 <sc-if value="{{ hasUpdate }}" hint-placeholder-val="{{ false }}">
 <div style="border-top:1px solid var(--color-divider);padding-top:10px;font-size:11.5px;line-height:1.5;white-space:pre-line">{{ releaseNotes }}</div>
 <button class="btn btn-primary btn-block" onClick="{{ downloadUpdate }}" style="min-height:42px">Download version {{ latestVersion }}</button>
+</sc-if>
+
+<sc-if value="{{ isStorage }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:8px"><div style="font-family:var(--font-heading);font-size:22px">{{ librarySize }}</div><div style="font-size:12px;line-height:1.55">Three documents are included for reliable offline access. Included documents cannot disappear when the phone loses service.</div></div>
+<sc-for list="{{ storageDocs }}" as="d" hint-placeholder-count="3"><div class="blueprint" style="padding:12px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center"><div><div style="font-family:var(--font-heading);font-size:16px">{{ d.title }}</div><div style="font-size:11px;opacity:.62;margin-top:2px">{{ d.size }} · {{ d.pages }} pages</div></div><span class="tag tag-outline">Offline</span></div></sc-for>
+<div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:9px"><div style="font-family:var(--font-heading);font-size:20px">Temporary reader data</div><div style="font-size:11.5px;line-height:1.5;opacity:.68">Clear recent-document history, remembered page positions, zoom settings, and cached schedules. Favorites and saved pages are kept.</div><button class="btn btn-secondary btn-block" onClick="{{ clearTemporaryData }}" style="min-height:40px">Clear temporary data</button><div style="font-size:10.5px;opacity:.62">{{ storageStatus }}</div></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isFeedback }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="font-size:12.5px;line-height:1.55;opacity:.7">Report an incorrect schedule, document problem, or app issue. Nothing is sent until you choose a destination from your phone’s Share menu.</div>
+<div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:10px">
+<label style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.58">Type</label>
+<select value="{{ feedbackType }}" onChange="{{ changeFeedbackType }}" style="min-height:42px;border:1px solid var(--color-divider);border-radius:8px;background:var(--color-bg);color:var(--color-text);padding:8px;font:inherit"><option>Schedule correction</option><option>Document problem</option><option>App problem</option><option>Feature suggestion</option></select>
+<label style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.58">Details</label>
+<textarea value="{{ feedbackDetails }}" onInput="{{ changeFeedbackDetails }}" placeholder="Describe what happened and where you saw it" style="min-height:130px;resize:vertical;border:1px solid var(--color-divider);border-radius:8px;background:var(--color-bg);color:var(--color-text);padding:10px;font:inherit"></textarea>
+<button class="btn btn-primary btn-block" onClick="{{ shareFeedback }}" style="min-height:42px">Share feedback</button><div style="font-size:10.5px;opacity:.62">{{ feedbackStatus }}</div>
+</div>
+</div>
 </sc-if>
 <button class="btn btn-secondary btn-block" onClick="{{ checkForUpdates }}" style="min-height:40px">{{ checkButton }}</button>
 <button class="btn btn-ghost btn-block" onClick="{{ viewReleases }}" style="min-height:36px">View release history</button>
@@ -499,6 +548,7 @@ a:hover{color:var(--color-accent-800)}
 <div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:8px">
 <div style="font-family:var(--font-heading);font-size:21px">Railroad Resources</div>
 <div style="font-size:12px;line-height:1.6">Version {{ currentVersion }} · Independent reference library by Loose Bolt Studio.</div>
+<button class="btn btn-primary btn-block" onClick="{{ goFeedback }}" style="min-height:40px">Report a problem or correction</button>
 <button class="btn btn-secondary btn-block" onClick="{{ openResourcesSite }}" style="min-height:40px">Open Resources website</button>
 <button class="btn btn-ghost btn-block" onClick="{{ viewReleases }}" style="min-height:36px">View release history</button>
 </div>
@@ -621,10 +671,11 @@ const compareSchedules = (before, after) => {
   return changes;
 };
 const DOCS = [
-  { id: "midsouth", title: "BLET MidSouth Scheduled Rules Agreement", meta: "Effective March 21, 1986 · Later amendments · 2003 rewritten compilation", pages: 137, file: "midsouth.pdf", viewer: "midsouth-viewer.html" },
-  { id: "peb250", title: "CPKC-BLET PEB 250 Agreement", meta: "Arbitration award establishing Articles V, VI, and VII terms · October 14, 2024", pages: 20, file: "peb250.pdf", viewer: "peb250-viewer.html" },
-  { id: "nyd", title: "New York Dock Section 4 Implementing Agreement", meta: "CPKC-BLET arbitration award under the New York Dock protective conditions · January 16, 2026", pages: 22, file: "nyd.pdf", viewer: "nyd-viewer.html" }
+  { id: "midsouth", category: "Agreements", bytes: 3530209, title: "BLET MidSouth Scheduled Rules Agreement", meta: "Effective March 21, 1986 · Later amendments · 2003 rewritten compilation", pages: 137, file: "midsouth.pdf", viewer: "midsouth-viewer.html" },
+  { id: "peb250", category: "Awards", bytes: 343422, title: "CPKC-BLET PEB 250 Agreement", meta: "Arbitration award establishing Articles V, VI, and VII terms · October 14, 2024", pages: 20, file: "peb250.pdf", viewer: "peb250-viewer.html" },
+  { id: "nyd", category: "Agreements", bytes: 306928, title: "New York Dock Section 4 Implementing Agreement", meta: "CPKC-BLET arbitration award under the New York Dock protective conditions · January 16, 2026", pages: 22, file: "nyd.pdf", viewer: "nyd-viewer.html" }
 ];
+const formatBytes = bytes => bytes >= 1048576 ? (bytes / 1048576).toFixed(1) + " MB" : Math.round(bytes / 1024) + " KB";
 const TODAY = new Date();
 TODAY.setHours(0, 0, 0, 0);
 const ANCHOR = Date.UTC(2026, 0, 1);
@@ -643,7 +694,7 @@ const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() ==
 class Component extends DCLogic {
   state = { stack: ["home"], query: "", loc: "All", spot: null, month: TODAY.getMonth(), year: TODAY.getFullYear(), jobId: null, docId: null, page: 1, favorites: [], recentDocs: [], savedTick: 0, theme: "system", updateChecking: false, updateStatus: "Checking for the latest release…", updateBadge: "Checking", latestVersion: "", latestUrl: "", releaseNotes: "", lastChecked: "", hasUpdate: false,
     scheduleChecking: true, scheduleEffective: "Loading assignment schedule…", scheduleStatus: "Opening the offline copy", scheduleChanges: [], hasPreviousSchedule: false, historyStatus: "No previous schedule has been saved yet.",
-    textSize: "normal", highContrast: false, backupStatus: "No backup copied during this session.",
+    textSize: "normal", highContrast: false, backupStatus: "No backup copied during this session.", docCategory: "All", docSearchQuery: "", searchIndex: [], storageStatus: "", feedbackType: "Schedule correction", feedbackDetails: "", feedbackStatus: "",
     myKind: "xen", mySpot: null, myJob: "LB07" };
 
   componentDidMount() {
@@ -665,6 +716,10 @@ class Component extends DCLogic {
     } catch (e) {}
     this.loadScheduleData(false);
     this.checkForUpdates();
+    this.loadSearchIndex();
+  }
+  async loadSearchIndex() {
+    try { const response = await fetch("pdf-search-index.json"); if (response.ok) this.setState({ searchIndex: await response.json() }); } catch (e) {}
   }
   applyScheduleText(text, status, checked, allowOlder) {
     const jobs = validateScheduleText(text, allowOlder ? [] : JOBS);
@@ -862,6 +917,29 @@ class Component extends DCLogic {
     try { localStorage.setItem("rr.lastpage." + doc.file, String(page)); } catch (e) {}
     this.openDocument(doc.id);
   }
+  openSearchResult(docId, page) {
+    const doc = DOCS.find(d => d.id === docId);
+    if (!doc) return;
+    try { localStorage.setItem("rr.lastpage." + doc.file, String(page)); } catch (e) {}
+    this.openDocument(docId);
+  }
+  clearTemporaryData() {
+    try {
+      const keys = [];
+      for (let i = 0; i < localStorage.length; i++) { const key = localStorage.key(i); if (key === "rr.scheduleCache" || key.startsWith("rr.lastpage.") || key.startsWith("rr.zoom.") || key.startsWith("rr.fit.")) keys.push(key); }
+      keys.forEach(key => localStorage.removeItem(key));
+      this.saveLibrary({ recentDocs: [] });
+      this.setState({ storageStatus: "Temporary data cleared. Favorites and saved pages were kept." });
+    } catch (e) { this.setState({ storageStatus: "Temporary data could not be cleared." }); }
+  }
+  shareFeedback() {
+    const details = this.state.feedbackDetails.trim();
+    if (!details) { this.setState({ feedbackStatus: "Please add a short description first." }); return; }
+    const text = [this.state.feedbackType, "", details, "", "App version " + APP_VERSION].join("\n");
+    if (window.RailroadNative && window.RailroadNative.shareText) window.RailroadNative.shareText("Railroad Resources feedback", text);
+    else navigator.clipboard.writeText(text).catch(() => window.prompt("Copy feedback:", text));
+    this.setState({ feedbackStatus: "Choose where you want to send the feedback." });
+  }
   setBookmarkLabel(file, page, label) {
     try {
       const key = "rr.bookmarkLabels." + file;
@@ -904,6 +982,8 @@ class Component extends DCLogic {
       ,options: ["App preferences", "Options"]
       ,help: ["Guide, sources, and privacy", "Help & About"]
       ,releases: ["What has changed", "Release History"]
+      ,storage: ["Offline files and app data", "Storage & Downloads"]
+      ,feedback: ["Corrections and support", "Send Feedback"]
     };
     const [kicker, title] = titles[screen];
 
@@ -969,6 +1049,15 @@ class Component extends DCLogic {
     const bookmarkItems = this.readBookmarks();
     const favoriteDocs = this.state.favorites.map(id => DOCS.find(d => d.id === id)).filter(Boolean);
     const recentDocs = this.state.recentDocs.map(id => DOCS.find(d => d.id === id)).filter(Boolean);
+    const docTerm = this.state.docSearchQuery.trim().toLowerCase();
+    const docWords = docTerm.split(/\s+/).filter(word => word.length > 1);
+    const docSearchResults = docWords.length ? this.state.searchIndex.filter(item => {
+      const docItem = DOCS.find(d => d.id === item.docId);
+      const haystack = ((docItem ? docItem.title + " " : "") + item.text).toLowerCase();
+      return docWords.every(word => haystack.includes(word));
+    }).slice(0, 30) : [];
+    const noticeIsUpdate = this.state.hasUpdate;
+    const showHomeNotice = noticeIsUpdate || this.state.scheduleChanges.length > 0;
 
     return {
       kicker, title,
@@ -976,7 +1065,7 @@ class Component extends DCLogic {
       back: () => this.setState(st => ({ stack: st.stack.slice(0, -1) })),
       isHome: screen === "home", isSchedules: screen === "schedules", isChanges: screen === "changes", isJobs: screen === "jobs",
       isJobMatrix: screen === "jobmatrix", isJob: screen === "job", isCalendar: screen === "calendar", isContracts: screen === "contracts",
-      isReader: screen === "reader", isSaved: screen === "saved", isOptions: screen === "options", isHelp: screen === "help", isReleaseHistory: screen === "releases",
+      isReader: screen === "reader", isSaved: screen === "saved", isOptions: screen === "options", isHelp: screen === "help", isReleaseHistory: screen === "releases", isStorage: screen === "storage", isFeedback: screen === "feedback",
       goHome: () => this.reset("home"),
       goSchedules: () => (onSched ? this.reset("schedules") : this.push("schedules")),
       goContracts: () => (onDocs ? this.reset("contracts") : this.push("contracts")),
@@ -987,6 +1076,12 @@ class Component extends DCLogic {
       goCalendar: () => this.push("calendar"),
       goOptions: () => (screen === "options" ? null : this.push("options")),
       goHelp: () => this.push("help"),
+      goStorage: () => this.push("storage"),
+      goFeedback: () => this.push("feedback"),
+      showHomeNotice,
+      homeNoticeTitle: noticeIsUpdate ? "App update available" : "Schedule updated",
+      homeNoticeText: noticeIsUpdate ? "A newer version is ready when you choose to install it." : this.state.scheduleChanges.length + " assignment change" + (this.state.scheduleChanges.length === 1 ? "" : "s") + " found.",
+      openHomeNotice: () => noticeIsUpdate ? this.push("options") : this.push("changes"),
       scheduleEffective: this.state.scheduleEffective,
       scheduleStatus: this.state.scheduleStatus,
       scheduleButton: this.state.scheduleChecking ? "Checking…" : "Check now",
@@ -1025,6 +1120,24 @@ class Component extends DCLogic {
       downloadUpdate: () => { if (this.state.latestUrl) window.location.href = this.state.latestUrl; },
       viewReleases: () => this.push("releases"),
       openResourcesSite: () => { window.location.href = "https://looseboltstudio.github.io/Resources/"; },
+      docSearchQuery: this.state.docSearchQuery,
+      changeDocSearch: e => this.setState({ docSearchQuery: e.target.value }),
+      isDocSearching: docWords.length > 0,
+      showDocList: docWords.length === 0,
+      noDocSearchResults: docWords.length > 0 && docSearchResults.length === 0,
+      docSearchSummary: this.state.searchIndex.length ? docSearchResults.length + (docSearchResults.length === 30 ? "+" : "") + " matching pages" : "Preparing offline search…",
+      docSearchResults: docSearchResults.map(item => {
+        const d = DOCS.find(docItem => docItem.id === item.docId) || DOCS[0];
+        const first = docWords.map(word => item.text.toLowerCase().indexOf(word)).filter(i => i >= 0).sort((a,b) => a-b)[0] || 0;
+        const start = Math.max(0, first - 55), snippet = (start ? "…" : "") + item.text.slice(start, start + 180) + (item.text.length > start + 180 ? "…" : "");
+        return { title: d.title, page: item.page, snippet, open: () => this.openSearchResult(item.docId, item.page) };
+      }),
+      docCategoryChips: ["All", "Agreements", "Awards", "Schedules"].map(label => chip(label, this.state.docCategory === label, () => this.setState({ docCategory: label }))),
+      librarySize: formatBytes(DOCS.reduce((sum, d) => sum + d.bytes, 0)) + " offline library",
+      storageDocs: DOCS.map(d => ({ ...d, size: formatBytes(d.bytes) })),
+      clearTemporaryData: () => this.clearTemporaryData(), storageStatus: this.state.storageStatus,
+      feedbackType: this.state.feedbackType, feedbackDetails: this.state.feedbackDetails, feedbackStatus: this.state.feedbackStatus,
+      changeFeedbackType: e => this.setState({ feedbackType: e.target.value }), changeFeedbackDetails: e => this.setState({ feedbackDetails: e.target.value }), shareFeedback: () => this.shareFeedback(),
       noBookmarks: bookmarkItems.length === 0,
       noFavorites: favoriteDocs.length === 0,
       noRecent: recentDocs.length === 0,
@@ -1125,7 +1238,7 @@ class Component extends DCLogic {
       nextMonth: () => this.setState(st => st.month === 11 ? { month: 0, year: st.year + 1 } : { month: st.month + 1 }),
       tintUnused: tint,
 
-      docs: DOCS.map(d => ({ ...d,
+      docs: DOCS.filter(d => this.state.docCategory === "All" || d.category === this.state.docCategory).map(d => ({ ...d,
         open: () => this.openDocument(d.id),
         star: this.state.favorites.includes(d.id) ? "★" : "☆",
         recent: this.state.recentDocs.includes(d.id) ? "Recently viewed" : "",

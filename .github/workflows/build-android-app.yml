@@ -1,0 +1,87 @@
+name: Build Railroad Resources Android app
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "android-app/**"
+      - ".github/workflows/build-android-app.yml"
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android build tools
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Use the repository schedule as the offline copy
+        run: |
+          mkdir -p android-app/assets/uploads
+          cp work-resources/schedules/beaumont-assignment-schedule/jobs.csv android-app/assets/uploads/beaumont-assignment-schedule.csv
+
+      - name: Build APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK="$ANDROID_SDK_ROOT"
+          BT="$SDK/build-tools/35.0.0"
+          PLATFORM="$SDK/platforms/android-35/android.jar"
+          BUILD="android-app/build"
+          mkdir -p "$BUILD/compiled" "$BUILD/gen" "$BUILD/classes" "$BUILD/dex"
+          "$BT/aapt2" compile --dir android-app/res -o "$BUILD/compiled/res.zip"
+          "$BT/aapt2" link --auto-add-overlay -o "$BUILD/base.apk" -I "$PLATFORM" --manifest android-app/AndroidManifest.xml --java "$BUILD/gen" -R "$BUILD/compiled/res.zip" -A android-app/assets
+          javac -source 8 -target 8 -bootclasspath "$PLATFORM" -d "$BUILD/classes" "$BUILD/gen/com/dkrus/resourcesapp/R.java" android-app/src/com/dkrus/resourcesapp/MainActivity.java
+          mapfile -t CLASSES < <(find "$BUILD/classes" -name '*.class' -print)
+          "$BT/d8" --lib "$PLATFORM" --output "$BUILD/dex" "${CLASSES[@]}"
+          jar uf "$BUILD/base.apk" -C "$BUILD/dex" classes.dex
+          "$BT/zipalign" -f 4 "$BUILD/base.apk" "$BUILD/Railroad-Resources-aligned.apk"
+
+      - name: Restore signing key
+        shell: bash
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: echo "$KEYSTORE_BASE64" | base64 --decode > android-app/build/resources-app.keystore
+
+      - name: Sign and verify APK
+        shell: bash
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          BT="$ANDROID_SDK_ROOT/build-tools/35.0.0"
+          "$BT/apksigner" sign --ks android-app/build/resources-app.keystore --ks-key-alias "$KEY_ALIAS" --ks-pass "pass:$KEYSTORE_PASSWORD" --key-pass "pass:$KEY_PASSWORD" --out Railroad-Resources.apk android-app/build/Railroad-Resources-aligned.apk
+          "$BT/apksigner" verify --verbose Railroad-Resources.apk
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Railroad-Resources
+          path: Railroad-Resources.apk
+
+      - name: Publish tagged release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || gh release create "$GITHUB_REF_NAME" --title "Railroad Resources $GITHUB_REF_NAME" --generate-notes
+          gh release upload "$GITHUB_REF_NAME" Railroad-Resources.apk --clobber

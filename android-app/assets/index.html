@@ -203,7 +203,7 @@ a:hover{color:var(--color-accent-800)}
 
 <sc-if value="{{ isChanges }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:14px">
-<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">A concise comparison between the previous saved schedule and the newest GitHub schedule.</div>
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">A concise comparison between the previous saved schedule and the newest available schedule.</div>
 <sc-if value="{{ noScheduleChanges }}" hint-placeholder-val="{{ true }}">
 <div class="blueprint" style="padding:16px;font-size:12.5px;line-height:1.55">No assignment changes were found in the latest check.</div>
 </sc-if>
@@ -486,7 +486,7 @@ a:hover{color:var(--color-accent-800)}
 <div style="display:flex;flex-direction:column;gap:14px">
 <div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:8px">
 <div style="font-family:var(--font-heading);font-size:21px">Quick guide</div>
-<div style="font-size:12px;line-height:1.6">Set your assignment from the Home card. Schedules refresh from GitHub and remain available offline. Orange matrix cells are assigned rest days. Open Files to search, zoom, bookmark, and save important PDF pages.</div>
+<div style="font-size:12px;line-height:1.6">Set your assignment from the Home card. Schedules refresh automatically and remain available offline. Orange matrix cells are assigned rest days. Open Files to search, zoom, bookmark, and save important PDF pages.</div>
 </div>
 <div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:8px">
 <div style="font-family:var(--font-heading);font-size:21px">Sources and accuracy</div>
@@ -502,6 +502,21 @@ a:hover{color:var(--color-accent-800)}
 <button class="btn btn-secondary btn-block" onClick="{{ openResourcesSite }}" style="min-height:40px">Open Resources website</button>
 <button class="btn btn-ghost btn-block" onClick="{{ viewReleases }}" style="min-height:36px">View release history</button>
 </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isReleaseHistory }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">App improvements are listed here without leaving Railroad Resources.</div>
+<div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:7px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><div style="font-family:var(--font-heading);font-size:21px">Version 1.2.0</div><span class="tag tag-outline">Preview</span></div>
+<div style="font-size:12px;line-height:1.6">Added safer schedule updates, schedule rollback, assignment sharing, Help & About, accessibility controls, backups, improved navigation, and automatic installer builds.</div>
+</div>
+<div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:7px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><div style="font-family:var(--font-heading);font-size:21px">Version 1.1.0</div><span class="tag tag-outline">Public</span></div>
+<div style="font-size:12px;line-height:1.6">Added the schedule library, assigned-job information, off-day calendars, PDF viewing, bookmarks, saved pages, and the Railroad Resources app icon.</div>
+</div>
+<div style="font-size:11px;line-height:1.55;opacity:.58">This history is included in the app. It does not open the project repository or expose development pages.</div>
 </div>
 </sc-if>
 
@@ -533,7 +548,6 @@ a:hover{color:var(--color-accent-800)}
 const DOWS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 const APP_VERSION = "1.2.0";
 const RELEASE_API = "https://api.github.com/repos/LooseBoltStudio/Resources/releases/latest";
-const RELEASES_URL = "https://github.com/LooseBoltStudio/Resources/releases";
 const LOCAL_SCHEDULE_URL = "uploads/beaumont-assignment-schedule.csv";
 const REMOTE_SCHEDULE_URL = "https://raw.githubusercontent.com/LooseBoltStudio/Resources/main/work-resources/schedules/beaumont-assignment-schedule/jobs.csv";
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -627,7 +641,7 @@ const isOff = (spot, d) => {
 const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 
 class Component extends DCLogic {
-  state = { stack: ["home"], query: "", loc: "All", spot: null, month: TODAY.getMonth(), year: TODAY.getFullYear(), jobId: null, docId: null, page: 1, favorites: [], recentDocs: [], savedTick: 0, theme: "system", updateChecking: false, updateStatus: "Checking GitHub for the latest release…", updateBadge: "Checking", latestVersion: "", latestUrl: "", releaseNotes: "", lastChecked: "", hasUpdate: false,
+  state = { stack: ["home"], query: "", loc: "All", spot: null, month: TODAY.getMonth(), year: TODAY.getFullYear(), jobId: null, docId: null, page: 1, favorites: [], recentDocs: [], savedTick: 0, theme: "system", updateChecking: false, updateStatus: "Checking for the latest release…", updateBadge: "Checking", latestVersion: "", latestUrl: "", releaseNotes: "", lastChecked: "", hasUpdate: false,
     scheduleChecking: true, scheduleEffective: "Loading assignment schedule…", scheduleStatus: "Opening the offline copy", scheduleChanges: [], hasPreviousSchedule: false, historyStatus: "No previous schedule has been saved yet.",
     textSize: "normal", highContrast: false, backupStatus: "No backup copied during this session.",
     myKind: "xen", mySpot: null, myJob: "LB07" };
@@ -664,7 +678,7 @@ class Component extends DCLogic {
     });
   }
   async loadScheduleData(manual) {
-    this.setState({ scheduleChecking: true, scheduleStatus: manual ? "Checking GitHub for schedule changes…" : "Opening the offline copy" });
+    this.setState({ scheduleChecking: true, scheduleStatus: manual ? "Checking for schedule changes…" : "Opening the offline copy" });
     if (!JOBS.length) {
       try {
         const local = await fetch(LOCAL_SCHEDULE_URL, { cache: "no-store" });
@@ -673,7 +687,7 @@ class Component extends DCLogic {
       } catch (e) {}
       try {
         const cached = JSON.parse(localStorage.getItem("rr.scheduleCache") || "null");
-        if (cached && cached.csv) this.applyScheduleText(cached.csv, "Using the last saved GitHub schedule", cached.checked);
+        if (cached && cached.csv) this.applyScheduleText(cached.csv, "Using the last saved schedule", cached.checked);
       } catch (e) {}
     }
     try {
@@ -687,7 +701,7 @@ class Component extends DCLogic {
       if (changed && CURRENT_SCHEDULE_CSV) {
         try { localStorage.setItem("rr.schedulePrevious", JSON.stringify({ csv: CURRENT_SCHEDULE_CSV, savedAt: checked })); } catch (e) {}
       }
-      this.applyScheduleText(csv, "Current GitHub schedule", checked);
+      this.applyScheduleText(csv, "Current schedule", checked);
       this.setState({ scheduleChanges: changes, hasPreviousSchedule: changed ? true : this.state.hasPreviousSchedule, historyStatus: changed ? "Previous schedule saved automatically before this update." : this.state.historyStatus });
       try {
         localStorage.setItem("rr.scheduleCache", JSON.stringify({ csv, checked }));
@@ -790,7 +804,7 @@ class Component extends DCLogic {
     return false;
   }
   async checkForUpdates() {
-    this.setState({ updateChecking: true, updateStatus: "Checking GitHub for the latest release…", updateBadge: "Checking" });
+    this.setState({ updateChecking: true, updateStatus: "Checking for the latest release…", updateBadge: "Checking" });
     try {
       const response = await fetch(RELEASE_API, { headers: { "Accept": "application/vnd.github+json" }, cache: "no-store" });
       if (!response.ok) throw new Error("GitHub returned " + response.status);
@@ -800,8 +814,8 @@ class Component extends DCLogic {
       const hasUpdate = this.isNewerVersion(latestVersion, APP_VERSION) && !!asset;
       this.setState({
         updateChecking: false, hasUpdate, latestVersion,
-        latestUrl: asset ? asset.browser_download_url : (release.html_url || RELEASES_URL),
-        releaseNotes: String(release.body || "See GitHub for release details.").slice(0, 700),
+        latestUrl: asset ? asset.browser_download_url : "",
+        releaseNotes: String(release.body || "Release details are available in the app history.").slice(0, 700),
         updateBadge: hasUpdate ? "Update available" : "Up to date",
         updateStatus: hasUpdate ? "Version " + latestVersion + " is ready to install." : "You have the latest public version.",
         lastChecked: "Last checked " + new Date().toLocaleString()
@@ -889,6 +903,7 @@ class Component extends DCLogic {
       ,saved: ["Offline collection", "Saved Items"]
       ,options: ["App preferences", "Options"]
       ,help: ["Guide, sources, and privacy", "Help & About"]
+      ,releases: ["What has changed", "Release History"]
     };
     const [kicker, title] = titles[screen];
 
@@ -961,7 +976,7 @@ class Component extends DCLogic {
       back: () => this.setState(st => ({ stack: st.stack.slice(0, -1) })),
       isHome: screen === "home", isSchedules: screen === "schedules", isChanges: screen === "changes", isJobs: screen === "jobs",
       isJobMatrix: screen === "jobmatrix", isJob: screen === "job", isCalendar: screen === "calendar", isContracts: screen === "contracts",
-      isReader: screen === "reader", isSaved: screen === "saved", isOptions: screen === "options", isHelp: screen === "help",
+      isReader: screen === "reader", isSaved: screen === "saved", isOptions: screen === "options", isHelp: screen === "help", isReleaseHistory: screen === "releases",
       goHome: () => this.reset("home"),
       goSchedules: () => (onSched ? this.reset("schedules") : this.push("schedules")),
       goContracts: () => (onDocs ? this.reset("contracts") : this.push("contracts")),
@@ -1008,7 +1023,7 @@ class Component extends DCLogic {
       checkButton: this.state.updateChecking ? "Checking…" : "Check for updates",
       checkForUpdates: () => this.checkForUpdates(),
       downloadUpdate: () => { if (this.state.latestUrl) window.location.href = this.state.latestUrl; },
-      viewReleases: () => { window.location.href = RELEASES_URL; },
+      viewReleases: () => this.push("releases"),
       openResourcesSite: () => { window.location.href = "https://looseboltstudio.github.io/Resources/"; },
       noBookmarks: bookmarkItems.length === 0,
       noFavorites: favoriteDocs.length === 0,

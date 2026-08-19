@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=4,user-scalable=yes">
+<style>
+html,body{margin:0;height:100%;background:#d9dde0;color:#17191b;font-family:system-ui,sans-serif}
+body{display:flex;flex-direction:column;overflow:hidden}
+#bar{flex:none;min-height:50px;background:#f4f4f2;border-bottom:1px solid #c9ccce;display:flex;align-items:center;gap:7px;padding:7px 10px;box-sizing:border-box}
+#searchbar{flex:none;background:#f4f4f2;border-bottom:1px solid #c9ccce;display:flex;align-items:center;gap:6px;padding:7px 10px;box-sizing:border-box}
+#toolsPanel{flex:none;background:#eceeec;border-bottom:1px solid #c9ccce;padding:8px 10px;display:flex;align-items:center;gap:7px;overflow-x:auto}
+#toolsPanel[hidden]{display:none}
+#bookmarkList{display:flex;gap:6px;align-items:center;white-space:nowrap}
+#bookmarkList button{min-width:38px;font-size:12px}
+#search{flex:1;min-width:0;height:34px;border:1px solid #aeb4b8;border-radius:4px;padding:0 9px;font-size:14px;background:#fff}
+#pageJump{width:50px;height:34px;border:1px solid #aeb4b8;border-radius:4px;text-align:center;font-size:14px;background:#fff;color:#17191b;box-sizing:border-box}
+#pageTotal{font-size:13px;font-weight:600;white-space:nowrap}
+#matches{font-size:12px;min-width:48px;text-align:center;color:#596169}
+button{border:1px solid #aeb4b8;background:#fff;color:#24333e;border-radius:4px;min-width:42px;height:34px;font-size:17px}
+#stage{flex:1;overflow:auto;text-align:center;padding:12px;box-sizing:border-box;touch-action:pan-x pan-y pinch-zoom;overscroll-behavior:contain}
+canvas{display:block;margin:0 auto;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.18);max-width:none}
+#message{padding:30px 16px;color:#596169}
+html[data-theme="dark"],html[data-theme="dark"] body{background:#111315;color:#f1ede5}
+html[data-theme="dark"] #bar,html[data-theme="dark"] #searchbar{background:#202326;border-color:#3c4043}
+html[data-theme="dark"] button,html[data-theme="dark"] #search{background:#2a2d30;color:#f1ede5;border-color:#555b60}
+html[data-theme="dark"] #pageJump{background:#2a2d30;color:#f1ede5;border-color:#555b60}
+html[data-theme="dark"] #toolsPanel{background:#191b1d;border-color:#3c4043}
+html[data-theme="dark"] #matches,html[data-theme="dark"] #message{color:#b8bdc1}
+html[data-theme="dark"] #stage{background:#111315}
+</style>
+</head>
+<body>
+<div id="bar">
+  <button id="prev" aria-label="Previous page">‹</button>
+  <input id="pageJump" type="number" min="1" value="1" aria-label="Page number">
+  <span id="pageTotal">/ …</span>
+  <button id="next" aria-label="Next page">›</button>
+  <button id="bookmark" aria-label="Save this page" style="min-width:82px;font-size:13px">☆ Save page</button>
+</div>
+<div id="searchbar">
+  <input id="search" type="search" placeholder="Search this agreement" aria-label="Search this agreement">
+  <button id="find" aria-label="Search">⌕</button>
+  <button id="nextMatch" aria-label="Next match" disabled>↓</button>
+  <button id="tools" aria-label="Reader tools" style="min-width:58px;font-size:13px">Tools</button>
+  <span id="matches"></span>
+</div>
+<div id="toolsPanel" hidden>
+  <button id="minus" aria-label="Zoom out">−</button>
+  <button id="plus" aria-label="Zoom in">+</button>
+  <button id="fitWidth" style="min-width:72px;font-size:12px">Fit width</button>
+  <button id="fitPage" style="min-width:72px;font-size:12px">Full page</button>
+  <span style="font-size:11px;opacity:.65;white-space:nowrap">Saved:</span>
+  <div id="bookmarkList"></div>
+</div>
+<div id="stage"><div id="message">Opening document…</div><canvas id="page" hidden></canvas></div>
+<script type="module">
+const themePreference = localStorage.getItem('rr.theme') || 'system';
+const useDarkTheme = themePreference === 'dark' || (themePreference === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+document.documentElement.setAttribute('data-theme', useDarkTheme ? 'dark' : 'light');
+import * as pdfjsLib from './pdf.mjs';
+pdfjsLib.GlobalWorkerOptions.workerSrc = './pdf.worker.mjs';
+
+const file = 'midsouth.pdf';
+const canvas = document.getElementById('page');
+const stage = document.getElementById('stage');
+const message = document.getElementById('message');
+let pdf = null, pageNumber = 1, zoom = Number(localStorage.getItem(`rr.zoom.${file}`) || 1), rendering = false, pending = null;
+let touchStartY = null, touchStartX = null;
+let fitMode = localStorage.getItem(`rr.fit.${file}`) || 'width';
+let searchResults = [], resultIndex = -1;
+const bookmarkKey = `rr.bookmarks.${file}`;
+const recentKey = `rr.lastpage.${file}`;
+let bookmarks = JSON.parse(localStorage.getItem(bookmarkKey) || '[]');
+
+function updateBookmarkButton() {
+  const saved = bookmarks.includes(pageNumber);
+  const button = document.getElementById('bookmark');
+  button.textContent = saved ? '★ Saved' : '☆ Save page';
+  button.style.color = saved ? '#e36f35' : '';
+  const list = document.getElementById('bookmarkList');
+  list.replaceChildren();
+  if (!bookmarks.length) { const empty=document.createElement('span'); empty.textContent='None'; empty.style.opacity='.55'; empty.style.fontSize='11px'; list.appendChild(empty); }
+  bookmarks.forEach(savedPage => { const item=document.createElement('button'); item.textContent=String(savedPage); item.setAttribute('aria-label',`Open saved page ${savedPage}`); item.onclick=()=>renderPage(savedPage); list.appendChild(item); });
+}
+
+async function renderPage(number, scrollToEnd = false) {
+  if (!pdf) return;
+  if (rendering) { pending = { number, scrollToEnd }; return; }
+  rendering = true;
+  const page = await pdf.getPage(number);
+  const base = page.getViewport({scale:1});
+  const widthFit = Math.max(.35, (stage.clientWidth - 24) / base.width);
+  const heightFit = Math.max(.35, (stage.clientHeight - 24) / base.height);
+  const fit = fitMode === 'page' ? Math.min(widthFit, heightFit) : widthFit;
+  const viewport = page.getViewport({scale:fit * zoom});
+  const ratio = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.floor(viewport.width * ratio);
+  canvas.height = Math.floor(viewport.height * ratio);
+  canvas.style.width = `${viewport.width}px`;
+  canvas.style.height = `${viewport.height}px`;
+  canvas.hidden = false;
+  message.hidden = true;
+  await page.render({canvasContext:canvas.getContext('2d'),viewport,transform:[ratio,0,0,ratio,0,0]}).promise;
+  pageNumber = number;
+  localStorage.setItem(recentKey, String(pageNumber));
+  document.getElementById('pageJump').value = String(pageNumber);
+  document.getElementById('pageTotal').textContent = `/ ${pdf.numPages}`;
+  updateBookmarkButton();
+  document.getElementById('prev').disabled = pageNumber <= 1;
+  document.getElementById('next').disabled = pageNumber >= pdf.numPages;
+  stage.scrollTo(0, scrollToEnd ? stage.scrollHeight : 0);
+  rendering = false;
+  if (pending !== null) { const requested = pending; pending = null; renderPage(requested.number, requested.scrollToEnd); }
+}
+
+stage.addEventListener('touchstart', event => {
+  if (event.touches.length === 1) { touchStartY = event.touches[0].clientY; touchStartX = event.touches[0].clientX; }
+}, { passive: true });
+stage.addEventListener('touchend', event => {
+  if (touchStartY === null || !event.changedTouches.length || !pdf) return;
+  const distance = touchStartY - event.changedTouches[0].clientY;
+  const horizontalDistance = touchStartX - event.changedTouches[0].clientX;
+  touchStartY = null; touchStartX = null;
+  if (Math.abs(distance) < Math.abs(horizontalDistance) * 1.25) return;
+  const atTop = stage.scrollTop <= 16;
+  const atBottom = stage.scrollTop + stage.clientHeight >= stage.scrollHeight - 16;
+  if (distance > 65 && atBottom && pageNumber < pdf.numPages) renderPage(pageNumber + 1);
+  else if (distance < -65 && atTop && pageNumber > 1) renderPage(pageNumber - 1, true);
+}, { passive: true });
+
+document.getElementById('prev').onclick = () => renderPage(Math.max(1,pageNumber-1));
+document.getElementById('next').onclick = () => renderPage(Math.min(pdf.numPages,pageNumber+1));
+document.getElementById('minus').onclick = () => { zoom=Math.max(.6,zoom-.2); localStorage.setItem(`rr.zoom.${file}`,String(zoom)); renderPage(pageNumber); };
+document.getElementById('plus').onclick = () => { zoom=Math.min(3,zoom+.2); localStorage.setItem(`rr.zoom.${file}`,String(zoom)); renderPage(pageNumber); };
+document.getElementById('tools').onclick = () => { const panel=document.getElementById('toolsPanel'); panel.hidden=!panel.hidden; document.getElementById('tools').textContent=panel.hidden?'Tools':'Close'; };
+document.getElementById('fitWidth').onclick = () => { fitMode='width'; zoom=1; localStorage.setItem(`rr.fit.${file}`,fitMode); localStorage.setItem(`rr.zoom.${file}`,'1'); renderPage(pageNumber); };
+document.getElementById('fitPage').onclick = () => { fitMode='page'; zoom=1; localStorage.setItem(`rr.fit.${file}`,fitMode); localStorage.setItem(`rr.zoom.${file}`,'1'); renderPage(pageNumber); };
+const jumpToPage = () => { if (!pdf) return; const requested=Math.min(pdf.numPages,Math.max(1,Number(document.getElementById('pageJump').value)||1)); renderPage(requested); };
+document.getElementById('pageJump').onchange = jumpToPage;
+document.getElementById('pageJump').onkeydown = e => { if(e.key==='Enter'){e.preventDefault();jumpToPage();document.getElementById('pageJump').blur();} };
+document.getElementById('bookmark').onclick = () => {
+  bookmarks = bookmarks.includes(pageNumber) ? bookmarks.filter(p => p !== pageNumber) : bookmarks.concat([pageNumber]).sort((a,b)=>a-b);
+  localStorage.setItem(bookmarkKey, JSON.stringify(bookmarks));
+  updateBookmarkButton();
+};
+
+async function searchDocument() {
+  const term = document.getElementById('search').value.trim().toLowerCase();
+  const matches = document.getElementById('matches');
+  if (term.length < 2) { matches.textContent = '2+ chars'; return; }
+  searchResults = []; resultIndex = -1;
+  matches.textContent = 'Searching';
+  document.getElementById('nextMatch').disabled = true;
+  for (let i=1; i<=pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    const text = content.items.map(item => item.str).join(' ').toLowerCase();
+    if (text.includes(term)) searchResults.push(i);
+    if (i % 5 === 0) { matches.textContent = `${i}/${pdf.numPages}`; await new Promise(r => setTimeout(r,0)); }
+  }
+  if (!searchResults.length) { matches.textContent = 'No results'; return; }
+  resultIndex = 0;
+  matches.textContent = `1/${searchResults.length}`;
+  document.getElementById('nextMatch').disabled = false;
+  renderPage(searchResults[0]);
+}
+
+document.getElementById('find').onclick = searchDocument;
+document.getElementById('search').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); searchDocument(); } };
+document.getElementById('nextMatch').onclick = () => {
+  if (!searchResults.length) return;
+  resultIndex = (resultIndex + 1) % searchResults.length;
+  document.getElementById('matches').textContent = `${resultIndex+1}/${searchResults.length}`;
+  renderPage(searchResults[resultIndex]);
+};
+
+try {
+  if (!file || !/^[a-z0-9_-]+\.pdf$/i.test(file)) throw new Error('Invalid document');
+  pdf = await pdfjsLib.getDocument({url:file,wasmUrl:'./'}).promise;
+  const lastPage = Math.min(pdf.numPages, Math.max(1, Number(localStorage.getItem(recentKey) || 1)));
+  await renderPage(lastPage);
+} catch (error) {
+  message.textContent = `Unable to open this PDF: ${error.message}`;
+  document.getElementById('pageTotal').textContent = 'Error';
+}
+</script>
+</body>
+</html>

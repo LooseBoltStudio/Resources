@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="styles.css">
+<script src="ds_bundle.js"></script>
+<style>
+html,body{margin:0;width:100%;height:100%;background:var(--color-bg);font-family:var(--font-body),system-ui,sans-serif}
+x-dc{display:block;min-height:100%}
+:root{--color-accent:#e36f35!important;--color-accent-700:#b94e22!important;--color-accent-800:#963b18!important;--color-bg:#f4f0e8!important;--color-text:#202326!important;--color-divider:#d8d1c5!important}
+[data-theme="dark"]{--color-bg:#151719!important;--color-text:#f1ede5!important;--color-divider:#3c4043!important}
+.app-header{background:#202326!important;color:#f4f0e8!important;border-bottom:none!important;padding:14px 18px 12px!important}
+.app-content{padding:18px!important;background:#f4f0e8}
+.app-nav{background:#fff;border-top:1px solid #d8d1c5!important;box-shadow:0 -6px 18px rgba(32,35,38,.08)}
+.blueprint{border:1px solid #ded7cb!important;border-radius:16px!important;background:#fff!important;box-shadow:0 5px 18px rgba(32,35,38,.07)!important}
+[data-theme="dark"] .app-content{background:#151719!important}
+[data-theme="dark"] .app-nav{background:#202326!important;border-color:#3c4043!important;box-shadow:0 -6px 18px rgba(0,0,0,.3)}
+[data-theme="dark"] .blueprint{background:#222528!important;border-color:#3c4043!important;box-shadow:0 5px 18px rgba(0,0,0,.22)!important}
+[data-theme="dark"] .input,[data-theme="dark"] iframe{background:#222528!important;color:#f1ede5!important;border-color:#3c4043!important}
+[data-contrast="high"]{--color-divider:#6b6256!important}
+[data-contrast="high"] .blueprint{border:2px solid #514a42!important;box-shadow:none!important}
+[data-theme="dark"][data-contrast="high"]{--color-divider:#8e9498!important}
+[data-theme="dark"][data-contrast="high"] .blueprint{border-color:#8e9498!important}
+.corner{display:none!important}
+.tag{border-radius:999px!important}
+.btn{border-radius:10px!important}
+a{color:var(--color-accent-700);text-decoration:none}
+a:hover{color:var(--color-accent-800)}
+.rw::-webkit-scrollbar{width:0;height:0}
+</style>
+</helmet>
+<div style="height:100vh;width:100%;display:flex;box-sizing:border-box">
+<div style="display:none">
+<div style="font-family:var(--font-heading);font-size:22px;line-height:1.1;letter-spacing:.01em;color:var(--color-text)">My Random Resources — Android</div>
+<div style="font-size:12.5px;line-height:1.5;color:color-mix(in srgb, var(--color-text) 62%, transparent)">Core flow: library → schedules → job listings, crew demand and the 2026 XEN off-day matrix → contract reader. Data taken from the live site.</div>
+</div>
+
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" hint-size="412px,892px">
+<div style="height:100%;display:flex;flex-direction:column;background:var(--color-bg);font-family:var(--font-body),system-ui,sans-serif;color:var(--color-text)">
+
+<div class="app-header" style="flex:none;padding:12px 16px 10px;border-bottom:1px solid var(--color-divider);display:flex;align-items:center;gap:10px;min-height:52px;box-sizing:border-box">
+<sc-if value="{{ canBack }}" hint-placeholder-val="{{ false }}">
+<button class="btn btn-secondary btn-icon" onClick="{{ back }}" aria-label="Back" style="flex:none;width:36px;height:36px;background:transparent">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 5l-7 7 7 7"></path></svg>
+</button>
+</sc-if>
+<div style="flex:1;min-width:0">
+<div style="font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 52%, transparent)">{{ kicker }}</div>
+<div style="font-family:var(--font-heading);font-size:20px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ title }}</div>
+</div>
+<button class="btn btn-secondary btn-icon" onClick="{{ goOptions }}" aria-label="Options" style="flex:none;width:36px;height:36px;background:transparent;color:#f4f0e8;border-color:#686d70">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1z"></path></svg>
+</button>
+</div>
+
+<div class="rw app-content" style="flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 16px 22px">
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<div class="blueprint" style="padding:13px 14px;display:flex;flex-direction:column;gap:10px">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
+<div style="flex:none;white-space:nowrap;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 52%, transparent)">My assignment</div>
+<button class="btn btn-ghost" onClick="{{ goPicker }}" style="min-height:28px;font-size:11.5px;padding:2px 6px">Change</button>
+</div>
+<div style="display:flex;flex-direction:column;gap:3px">
+<div style="font-family:var(--font-heading);font-size:26px;line-height:1">{{ myLabel }}</div>
+<div style="font-size:11.5px;line-height:1.45;color:color-mix(in srgb, var(--color-text) 60%, transparent)">{{ mySub }}</div>
+</div>
+<div style="border-top:1px solid var(--color-divider);padding-top:10px;display:flex;flex-direction:column;gap:3px">
+<div style="font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 52%, transparent)">Today · {{ todayLabel }}</div>
+<div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+<div style="font-family:var(--font-heading);font-size:30px;line-height:1.05">{{ todayStatus }}</div>
+<div style="font-size:12px;color:color-mix(in srgb, var(--color-text) 62%, transparent)">{{ todaySub }}</div>
+</div>
+</div>
+<div style="display:flex;gap:6px;margin-top:2px">
+<sc-for list="{{ nextDays }}" as="d" hint-placeholder-count="4">
+<div style="flex:1;border:1px solid {{ d.bd }};background:{{ d.bg }};color:{{ d.fg }};padding:6px 4px;text-align:center">
+<div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;opacity:.72">{{ d.dow }}</div>
+<div style="font-family:var(--font-heading);font-size:16px;line-height:1.2">{{ d.day }}</div>
+<div style="font-size:9.5px;opacity:.78">{{ d.status }}</div>
+</div>
+</sc-for>
+</div>
+<div style="border-top:1px solid var(--color-divider);padding-top:9px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center">
+<div style="font-size:11px;line-height:1.45;color:color-mix(in srgb, var(--color-text) 68%, transparent)">{{ myDetails }}</div>
+<button class="btn btn-ghost" onClick="{{ openMyAssignment }}" style="min-height:32px;padding:4px 7px;font-size:11px">View details →</button>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:22px">
+<div class="blueprint" onClick="{{ goSchedules }}" style="padding:14px;display:flex;flex-direction:column;gap:8px;cursor:pointer">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="display:flex;align-items:center;gap:9px">
+<span style="font-family:var(--font-heading);font-size:13px;color:var(--color-accent-700)">01</span>
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.5"><rect x="3" y="4" width="18" height="17"></rect><path d="M3 10h18M9 4v17M15 4v17"></path></svg>
+</div>
+<div style="font-family:var(--font-heading);font-size:23px;line-height:1.1">Schedules &amp; Assignments</div>
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">Beaumont job listings, daily crew demand, and the 2026 XEN Spots 1–9 off-day calendar.</div>
+<div style="font-size:12px;color:var(--color-accent-700);margin-top:2px">Open schedules →</div>
+</div>
+
+<div class="blueprint" onClick="{{ goContracts }}" style="padding:14px;display:flex;flex-direction:column;gap:8px;cursor:pointer">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="display:flex;align-items:center;gap:9px">
+<span style="font-family:var(--font-heading);font-size:13px;color:var(--color-accent-700)">02</span>
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.5"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v4h4M9 12h6M9 16h6"></path></svg>
+</div>
+<div style="font-family:var(--font-heading);font-size:23px;line-height:1.1">Files</div>
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">Open railroad agreements in the reader, including the BLET MidSouth Scheduled Rules Agreement.</div>
+<div style="font-size:12px;color:var(--color-accent-700);margin-top:2px">Open files →</div>
+</div>
+</div>
+
+<div style="font-size:11px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 55%, transparent)">Independent reference library. Verify documents and schedules against current agreements, notices, and local instructions.</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPicker }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:15px">
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">Pick the job you hold or the extra board turn you are on. The front page then reads your schedule from it.</div>
+<div class="seg" style="width:100%">
+<button class="seg-opt" onClick="{{ pickKindJob }}" style="flex:1;justify-content:center;background:{{ segJobBg }};color:{{ segJobFg }}">Assigned job</button>
+<button class="seg-opt" onClick="{{ pickKindXen }}" style="flex:1;justify-content:center;background:{{ segXenBg }};color:{{ segXenFg }}">XEN extra board</button>
+</div>
+
+<sc-if value="{{ kindIsJob }}" hint-placeholder-val="{{ false }}">
+<div class="blueprint" style="padding:0">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<sc-for list="{{ jobOptions }}" as="o" hint-placeholder-count="8">
+<div onClick="{{ o.pick }}" style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:11px 12px;border-top:1px solid {{ o.rule }};background:{{ o.bg }};color:{{ o.fg }};cursor:pointer">
+<div style="min-width:0">
+<div style="font-family:var(--font-heading);font-size:17px;line-height:1.1">{{ o.id }}</div>
+<div style="font-size:11px;opacity:.7">{{ o.meta }}</div>
+</div>
+<div style="font-size:11px;opacity:.8">{{ o.mark }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ kindIsXen }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+<sc-for list="{{ spotOptions }}" as="o" hint-placeholder-count="9">
+<button onClick="{{ o.pick }}" style="font:inherit;cursor:pointer;padding:12px 4px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};display:flex;flex-direction:column;gap:2px;align-items:center;min-height:64px">
+<span style="font-family:var(--font-heading);font-size:17px;line-height:1">{{ o.label }}</span>
+<span style="font-size:10px;opacity:.75;white-space:nowrap">Turn {{ o.turn }}</span>
+</button>
+</sc-for>
+</div>
+<div style="font-size:11px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 55%, transparent)">Extra board turns run the 6-on / 2-off matrix. Selecting a turn also sets the calendar's default spot.</div>
+</sc-if>
+
+<button class="btn btn-primary btn-block" onClick="{{ back }}" style="min-height:44px">Done</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSchedules }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:22px">
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">Job listings, weekly assignments, crew-demand totals, and assigned off-day calendars in one section.</div>
+<div class="blueprint" style="padding:12px 14px;display:flex;align-items:center;gap:12px">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="flex:1;min-width:0">
+<div style="font-size:11px;line-height:1.45;color:var(--color-text)">{{ scheduleEffective }}</div>
+<div style="font-size:10px;line-height:1.45;color:color-mix(in srgb, var(--color-text) 55%, transparent)">{{ scheduleStatus }}</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:5px;flex:none">
+<button class="btn btn-secondary" onClick="{{ refreshSchedule }}" style="min-height:34px;padding:6px 10px;font-size:11px">{{ scheduleButton }}</button>
+<button class="btn btn-ghost" onClick="{{ goChanges }}" style="min-height:28px;padding:3px 7px;font-size:10px">What changed?</button>
+</div>
+</div>
+<div class="blueprint" onClick="{{ goJobs }}" style="padding:14px;display:flex;flex-direction:column;gap:7px;cursor:pointer">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="font-family:var(--font-heading);font-size:13px;color:var(--color-accent-700)">01</div>
+<div style="font-family:var(--font-heading);font-size:22px;line-height:1.1">Beaumont Assignment Schedule</div>
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">Twenty-three jobs grouped Beaumont, Port Arthur, Mossville, and Leesville with start times, off days, crew sizes, and notes.</div>
+<div style="font-size:12px;color:var(--color-accent-700)">Open job listings →</div>
+</div>
+<div class="blueprint" onClick="{{ goJobMatrix }}" style="padding:14px;display:flex;flex-direction:column;gap:7px;cursor:pointer">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="font-family:var(--font-heading);font-size:13px;color:var(--color-accent-700)">02</div>
+<div style="font-family:var(--font-heading);font-size:22px;line-height:1.1">Assigned-Job Off-Day Matrix</div>
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">All current assigned jobs shown Monday through Sunday, with rest days highlighted.</div>
+<div style="font-size:12px;color:var(--color-accent-700)">Open weekly matrix →</div>
+</div>
+<div class="blueprint" onClick="{{ goCalendar }}" style="padding:14px;display:flex;flex-direction:column;gap:7px;cursor:pointer">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="font-family:var(--font-heading);font-size:13px;color:var(--color-accent-700)">03</div>
+<div style="font-family:var(--font-heading);font-size:22px;line-height:1.1">{{ calendarYear }} XEN Off-Day Matrix</div>
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">Spots 1–9 on the 6-on / 2-off cycle, one month at a time.</div>
+<div style="font-size:12px;color:var(--color-accent-700)">Open calendar →</div>
+</div>
+<div style="font-size:11px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 55%, transparent)">Current assignments effective Monday, August 24, 2026</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isChanges }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">A concise comparison between the previous saved schedule and the newest GitHub schedule.</div>
+<sc-if value="{{ noScheduleChanges }}" hint-placeholder-val="{{ true }}">
+<div class="blueprint" style="padding:16px;font-size:12.5px;line-height:1.55">No assignment changes were found in the latest check.</div>
+</sc-if>
+<sc-for list="{{ scheduleChanges }}" as="c" hint-placeholder-count="3">
+<div class="blueprint" style="padding:13px 14px;display:flex;flex-direction:column;gap:5px">
+<div style="display:flex;align-items:center;gap:8px"><span class="tag tag-accent">{{ c.type }}</span><strong style="font-family:var(--font-heading);font-size:17px">{{ c.title }}</strong></div>
+<div style="font-size:12px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 70%, transparent)">{{ c.note }}</div>
+</div>
+</sc-for>
+<div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:9px">
+<div style="font-family:var(--font-heading);font-size:18px">Schedule history</div>
+<div style="font-size:11.5px;line-height:1.5;opacity:.68">{{ historyStatus }}</div>
+<sc-if value="{{ hasPreviousSchedule }}" hint-placeholder-val="{{ false }}">
+<button class="btn btn-secondary btn-block" onClick="{{ restorePreviousSchedule }}" style="min-height:40px">Restore previous schedule</button>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isJobs }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;flex-direction:column;gap:9px">
+<input class="input" type="text" placeholder="Search job ID, craft, or note" value="{{ query }}" onChange="{{ onQuery }}">
+<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:2px">
+<sc-for list="{{ locChips }}" as="c" hint-placeholder-count="5">
+<button class="btn btn-secondary" onClick="{{ c.pick }}" style="flex:none;min-height:32px;padding:5px 11px;font-size:12px;background:{{ c.bg }};color:{{ c.fg }};border-color:{{ c.bd }}">{{ c.label }}</button>
+</sc-for>
+</div>
+<div style="font-size:11px;color:color-mix(in srgb, var(--color-text) 55%, transparent)">{{ jobCount }} shown · Monday start times</div>
+</div>
+
+<div class="blueprint" style="padding:0">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<sc-for list="{{ jobs }}" as="j" hint-placeholder-count="6">
+<div onClick="{{ j.open }}" style="display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;padding:11px 12px;border-top:1px solid {{ j.rule }};cursor:pointer">
+<div>
+<div style="font-family:var(--font-heading);font-size:17px;line-height:1.1">{{ j.id }}</div>
+<div style="font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 52%, transparent)">{{ j.craft }}</div>
+</div>
+<div style="min-width:0">
+<div style="font-size:12.5px;line-height:1.3">{{ j.loc }}</div>
+<div style="font-size:11px;color:color-mix(in srgb, var(--color-text) 58%, transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ j.summary }}</div>
+</div>
+<div style="text-align:right">
+<div style="font-family:var(--font-heading);font-size:16px;line-height:1.1;color:{{ j.timeColor }}">{{ j.today }}</div>
+<div style="font-size:10px;color:color-mix(in srgb, var(--color-text) 52%, transparent)">{{ j.crew }} crew</div>
+</div>
+</div>
+</sc-for>
+</div>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isJobMatrix }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:15px">
+<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:2px">
+<sc-for list="{{ matrixLocChips }}" as="c" hint-placeholder-count="5">
+<button class="btn btn-secondary" onClick="{{ c.pick }}" style="flex:none;min-height:32px;padding:5px 11px;font-size:12px;background:{{ c.bg }};color:{{ c.fg }};border-color:{{ c.bd }}">{{ c.label }}</button>
+</sc-for>
+</div>
+<div style="font-size:11px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 62%, transparent)">Swipe sideways to see Monday through Sunday. Orange cells are assigned rest days. Tap a job for its full schedule.</div>
+<div class="blueprint" style="padding:0;overflow-x:auto">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="min-width:570px">
+<div style="display:grid;grid-template-columns:90px repeat(7,1fr);border-bottom:1px solid var(--color-divider)">
+<div style="padding:10px;font-size:10px;letter-spacing:.1em;text-transform:uppercase">Job</div>
+<sc-for list="{{ matrixDows }}" as="d" hint-placeholder-count="7">
+<div style="padding:10px 3px;text-align:center;font-size:10px;letter-spacing:.05em;text-transform:uppercase">{{ d }}</div>
+</sc-for>
+</div>
+<sc-for list="{{ matrixRows }}" as="r" hint-placeholder-count="8">
+<div onClick="{{ r.open }}" style="display:grid;grid-template-columns:90px repeat(7,1fr);border-top:1px solid {{ r.rule }};cursor:pointer">
+<div style="padding:10px 8px;position:sticky;left:0;background:var(--color-bg);z-index:1">
+<div style="font-family:var(--font-heading);font-size:16px">{{ r.id }}</div>
+<div style="font-size:9px;color:color-mix(in srgb, var(--color-text) 52%, transparent)">{{ r.location }}</div>
+</div>
+<sc-for list="{{ r.days }}" as="d" hint-placeholder-count="7">
+<div style="margin:4px 2px;padding:8px 2px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--font-heading);font-size:11px;background:{{ d.bg }};color:{{ d.fg }};border:1px solid {{ d.bd }}">{{ d.label }}</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isJob }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;align-items:baseline;gap:9px;flex-wrap:wrap">
+<span class="tag tag-accent">{{ job.craft }}</span>
+<span class="tag tag-outline">{{ job.crew }} crew</span>
+<span class="tag tag-neutral">{{ job.workday }}</span>
+</div>
+<div class="blueprint" style="padding:13px 14px;display:flex;flex-direction:column;gap:10px">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 52%, transparent)">Weekly assignment</div>
+<sc-for list="{{ job.week }}" as="w" hint-placeholder-count="7">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-bottom:7px;border-bottom:1px solid var(--color-divider)">
+<div style="font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 62%, transparent)">{{ w.dow }}</div>
+<div style="font-family:var(--font-heading);font-size:17px;line-height:1;color:{{ w.color }}">{{ w.value }}</div>
+</div>
+</sc-for>
+</div>
+<div class="blueprint" style="padding:13px 14px;display:flex;flex-direction:column;gap:7px">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 52%, transparent)">Starting location</div>
+<div style="font-size:13px">{{ job.start }}</div>
+<div style="font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 52%, transparent);margin-top:6px">Notes</div>
+<div style="font-size:12.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 72%, transparent)">{{ job.notes }}</div>
+</div>
+<button class="btn btn-primary btn-block" onClick="{{ setThisJob }}" style="min-height:44px">{{ setThisJobLabel }}</button>
+<button class="btn btn-secondary btn-block" onClick="{{ shareJob }}" style="min-height:44px">Share this assignment</button>
+<button class="btn btn-secondary btn-block" onClick="{{ goCalendar }}" style="min-height:44px">Check off days in the XEN matrix</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isCalendar }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:15px">
+<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:2px">
+<sc-for list="{{ spots }}" as="s" hint-placeholder-count="9">
+<button class="btn btn-secondary" onClick="{{ s.pick }}" style="flex:none;min-height:36px;padding:5px 12px;font-family:var(--font-heading);font-size:14px;background:{{ s.bg }};color:{{ s.fg }};border-color:{{ s.bd }}">{{ s.label }}</button>
+</sc-for>
+</div>
+
+<div class="blueprint" style="padding:13px 13px 15px;display:flex;flex-direction:column;gap:12px">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+<button class="btn btn-secondary btn-icon" onClick="{{ prevMonth }}" aria-label="Earlier" style="background:transparent"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 5l-7 7 7 7"></path></svg></button>
+<div style="text-align:center">
+<div style="font-family:var(--font-heading);font-size:21px;line-height:1.1">{{ monthLabel }}</div>
+<div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 52%, transparent)">{{ spotLabel }} · 6 &amp; 2</div>
+</div>
+<button class="btn btn-secondary btn-icon" onClick="{{ nextMonth }}" aria-label="Later" style="background:transparent"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"></path></svg></button>
+</div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px">
+<sc-for list="{{ dows }}" as="d" hint-placeholder-count="7">
+<div style="text-align:center;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 50%, transparent)">{{ d }}</div>
+</sc-for>
+</div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px">
+<sc-for list="{{ cells }}" as="c" hint-placeholder-count="35">
+<div style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:14px;background:{{ c.bg }};color:{{ c.fg }};border:1px solid {{ c.bd }}">{{ c.label }}</div>
+</sc-for>
+</div>
+<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:color-mix(in srgb, var(--color-text) 60%, transparent)">
+<div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;background:var(--color-accent);display:inline-block"></span>Assigned off day</div>
+<div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border:1.5px solid var(--color-text);display:inline-block"></span>Today</div>
+</div>
+</div>
+
+<div class="blueprint" style="padding:13px 14px;display:flex;flex-direction:column;gap:7px">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 52%, transparent)">Source and method</div>
+<div style="font-size:12.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 72%, transparent)">Dates come from US South Region — Baton Rouge–Beaumont General Manager Notice No. 10, issued January 1, 2026, “2026 6&amp;2 ADO Matrix.” Each job maps to the matching turn number; Turn 9 follows Turn 1. Verify against current local instructions.</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isContracts }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">Select an agreement to open its reader. Direct PDF downloads stay available on each document.</div>
+<sc-for list="{{ docs }}" as="d" hint-placeholder-count="3">
+<div class="blueprint" onClick="{{ d.open }}" style="padding:13px 14px;display:flex;flex-direction:column;gap:7px;cursor:pointer">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="display:flex;align-items:center;gap:8px">
+<span class="tag tag-outline">PDF</span>
+<span style="font-size:11px;color:color-mix(in srgb, var(--color-text) 55%, transparent)">{{ d.pages }} pages</span>
+<span style="flex:1"></span>
+<button class="btn btn-ghost" onClick="{{ d.toggleFavorite }}" aria-label="Favorite" style="font-size:20px;min-width:38px;min-height:34px;color:var(--color-accent)">{{ d.star }}</button>
+</div>
+<div style="font-family:var(--font-heading);font-size:20px;line-height:1.15">{{ d.title }}</div>
+<div style="font-size:12px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 65%, transparent)">{{ d.meta }}</div>
+<div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--color-accent-700)">{{ d.recent }}</div>
+<div style="font-size:12px;color:var(--color-accent-700)">Open in reader →</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isReader }}" hint-placeholder-val="{{ false }}">
+<div style="height:calc(100vh - 150px);min-height:420px;display:flex;flex-direction:column;gap:8px">
+<div style="font-size:11px;color:color-mix(in srgb, var(--color-text) 58%, transparent)">{{ doc.meta }}</div>
+<iframe src="{{ doc.viewer }}" title="{{ doc.title }}" style="flex:1;width:100%;border:1px solid var(--color-divider);background:var(--color-neutral-200)"></iframe>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSaved }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">Your favorite agreements, saved PDF pages, and recently opened documents—available offline.</div>
+
+<div style="display:flex;flex-direction:column;gap:9px">
+<div style="font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.58">Bookmarked pages</div>
+<sc-if value="{{ noBookmarks }}" hint-placeholder-val="{{ true }}"><div class="blueprint" style="padding:14px;font-size:12px;line-height:1.5;opacity:.68">No pages saved yet. Tap the star while reading a PDF to add one.</div></sc-if>
+<sc-for list="{{ savedPages }}" as="b" hint-placeholder-count="2">
+<div class="blueprint" style="padding:12px;display:flex;flex-direction:column;gap:9px">
+<div onClick="{{ b.open }}" style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;cursor:pointer">
+<div><div style="font-family:var(--font-heading);font-size:16px;line-height:1.2">{{ b.title }}</div><div style="font-size:11px;opacity:.62;margin-top:3px">Page {{ b.page }} · Tap to open</div></div>
+<span style="color:var(--color-accent);font-size:20px">★</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr auto;gap:8px">
+<input class="input" type="text" placeholder="Add a label, e.g. Overtime rule" value="{{ b.label }}" onChange="{{ b.rename }}" style="min-width:0;height:36px;font-size:12px">
+<button class="btn btn-ghost" onClick="{{ b.remove }}" style="min-height:36px;color:var(--color-accent-700)">Remove</button>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:9px">
+<div style="font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.58">Favorite documents</div>
+<sc-if value="{{ noFavorites }}" hint-placeholder-val="{{ true }}"><div class="blueprint" style="padding:14px;font-size:12px;line-height:1.5;opacity:.68">No favorite documents yet. Use the star in the File library.</div></sc-if>
+<sc-for list="{{ savedFavorites }}" as="d" hint-placeholder-count="2">
+<div class="blueprint" onClick="{{ d.open }}" style="padding:12px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;cursor:pointer"><div><div style="font-family:var(--font-heading);font-size:16px;line-height:1.2">{{ d.title }}</div><div style="font-size:11px;opacity:.62;margin-top:3px">{{ d.pages }} pages</div></div><span style="color:var(--color-accent);font-size:20px">★</span></div>
+</sc-for>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:9px">
+<div style="font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.58">Recently opened</div>
+<sc-if value="{{ noRecent }}" hint-placeholder-val="{{ true }}"><div class="blueprint" style="padding:14px;font-size:12px;opacity:.68">Your recently opened documents will appear here.</div></sc-if>
+<sc-for list="{{ savedRecent }}" as="d" hint-placeholder-count="2">
+<div class="blueprint" onClick="{{ d.open }}" style="padding:12px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;cursor:pointer"><div><div style="font-family:var(--font-heading);font-size:16px;line-height:1.2">{{ d.title }}</div><div style="font-size:11px;opacity:.62;margin-top:3px">Continue reading</div></div><span style="font-size:18px;color:var(--color-accent)">→</span></div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isOptions }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="font-size:12.5px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 68%, transparent)">Choose how Railroad Resources looks. Your preference is saved on this phone and also applies to the PDF reader.</div>
+<div class="blueprint" style="padding:6px;display:flex;flex-direction:column">
+<sc-for list="{{ themeOptions }}" as="o" hint-placeholder-count="3">
+<button onClick="{{ o.pick }}" style="border:none;border-top:1px solid {{ o.rule }};background:{{ o.bg }};color:{{ o.fg }};font:inherit;text-align:left;padding:14px 12px;display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:10px;cursor:pointer;border-radius:10px">
+<span style="font-size:21px;text-align:center">{{ o.icon }}</span>
+<span><strong style="display:block;font-size:14px">{{ o.label }}</strong><span style="display:block;font-size:11.5px;opacity:.68;margin-top:2px">{{ o.note }}</span></span>
+<span style="font-size:18px">{{ o.mark }}</span>
+</button>
+</sc-for>
+</div>
+<div style="font-size:11px;line-height:1.55;color:color-mix(in srgb, var(--color-text) 55%, transparent)">Follow phone automatically uses your Android light or dark appearance setting.</div>
+<div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:11px">
+<div style="font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.58">Accessibility</div>
+<div style="font-family:var(--font-heading);font-size:20px">Reading comfort</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<button class="btn btn-secondary" onClick="{{ useNormalText }}" style="min-height:40px;background:{{ normalTextBg }};color:{{ normalTextFg }}">Normal text</button>
+<button class="btn btn-secondary" onClick="{{ useLargeText }}" style="min-height:40px;background:{{ largeTextBg }};color:{{ largeTextFg }}">Large text</button>
+</div>
+<button class="btn btn-secondary btn-block" onClick="{{ toggleContrast }}" style="min-height:40px">{{ contrastLabel }}</button>
+</div>
+<div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:10px">
+<div style="font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.58">Backup &amp; restore</div>
+<div style="font-family:var(--font-heading);font-size:20px">Personal app data</div>
+<div style="font-size:11.5px;line-height:1.5;opacity:.68">Includes your assignment, theme, favorites, saved PDF pages, labels, and accessibility settings.</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<button class="btn btn-secondary" onClick="{{ copyBackup }}" style="min-height:40px">Copy backup</button>
+<button class="btn btn-secondary" onClick="{{ restoreBackup }}" style="min-height:40px">Restore</button>
+</div>
+<div style="font-size:10.5px;line-height:1.45;opacity:.62">{{ backupStatus }}</div>
+</div>
+<div class="blueprint" onClick="{{ goHelp }}" style="padding:14px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;cursor:pointer">
+<div><div style="font-family:var(--font-heading);font-size:20px">Help &amp; About</div><div style="font-size:11.5px;opacity:.66;margin-top:3px">Quick guide, data sources, privacy, and support</div></div><span style="font-size:20px;color:var(--color-accent)">→</span>
+</div>
+<div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:11px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+<div><div style="font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.58">App updates</div><div style="font-family:var(--font-heading);font-size:20px;margin-top:3px">Version {{ currentVersion }}</div></div>
+<span class="tag tag-outline">{{ updateBadge }}</span>
+</div>
+<div style="font-size:12.5px;line-height:1.5">{{ updateStatus }}</div>
+<div style="font-size:10.5px;line-height:1.45;opacity:.58">{{ lastChecked }}</div>
+<sc-if value="{{ hasUpdate }}" hint-placeholder-val="{{ false }}">
+<div style="border-top:1px solid var(--color-divider);padding-top:10px;font-size:11.5px;line-height:1.5;white-space:pre-line">{{ releaseNotes }}</div>
+<button class="btn btn-primary btn-block" onClick="{{ downloadUpdate }}" style="min-height:42px">Download version {{ latestVersion }}</button>
+</sc-if>
+<button class="btn btn-secondary btn-block" onClick="{{ checkForUpdates }}" style="min-height:40px">{{ checkButton }}</button>
+<button class="btn btn-ghost btn-block" onClick="{{ viewReleases }}" style="min-height:36px">View release history</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isHelp }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:8px">
+<div style="font-family:var(--font-heading);font-size:21px">Quick guide</div>
+<div style="font-size:12px;line-height:1.6">Set your assignment from the Home card. Schedules refresh from GitHub and remain available offline. Orange matrix cells are assigned rest days. Open Files to search, zoom, bookmark, and save important PDF pages.</div>
+</div>
+<div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:8px">
+<div style="font-family:var(--font-heading);font-size:21px">Sources and accuracy</div>
+<div style="font-size:12px;line-height:1.6">Schedules come from the Loose Bolt Studio Resources repository and the listed assignment notices. Agreements and calendars are reference copies. Always verify against current carrier notices, agreements, and local instructions.</div>
+</div>
+<div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:8px">
+<div style="font-family:var(--font-heading);font-size:21px">Privacy</div>
+<div style="font-size:12px;line-height:1.6">The app has no account, advertising, or analytics. Favorites, bookmarks, assignment choices, and backups stay on your phone unless you choose to copy or share them. Internet access is used to check schedule and app updates.</div>
+</div>
+<div class="blueprint" style="padding:14px;display:flex;flex-direction:column;gap:8px">
+<div style="font-family:var(--font-heading);font-size:21px">Railroad Resources</div>
+<div style="font-size:12px;line-height:1.6">Version {{ currentVersion }} · Independent reference library by Loose Bolt Studio.</div>
+<button class="btn btn-secondary btn-block" onClick="{{ openResourcesSite }}" style="min-height:40px">Open Resources website</button>
+<button class="btn btn-ghost btn-block" onClick="{{ viewReleases }}" style="min-height:36px">View release history</button>
+</div>
+</div>
+</sc-if>
+
+</div>
+
+<div class="app-nav" style="flex:none;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--color-divider)">
+<button onClick="{{ goHome }}" style="border:none;background:{{ tabHomeBg }};color:{{ tabHome }};padding:9px 0 11px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font:inherit;min-height:56px">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 11l8-7 8 7v9H4z"></path></svg>
+<span style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase">Home</span>
+</button>
+<button onClick="{{ goSchedules }}" style="border:none;background:{{ tabSchedBg }};color:{{ tabSched }};padding:9px 0 11px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font:inherit;min-height:56px">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="17"></rect><path d="M3 10h18M9 4v17M15 4v17"></path></svg>
+<span style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase">Schedules</span>
+</button>
+<button onClick="{{ goContracts }}" style="border:none;background:{{ tabDocBg }};color:{{ tabDoc }};padding:9px 0 11px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font:inherit;min-height:56px">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v4h4M9 12h6M9 16h6"></path></svg>
+<span style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase">Files</span>
+</button>
+<button onClick="{{ goSaved }}" style="border:none;background:{{ tabSavedBg }};color:{{ tabSaved }};padding:9px 0 11px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font:inherit;min-height:56px">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h12v18l-6-4-6 4z"></path></svg>
+<span style="font-size:10px;letter-spacing:.05em;text-transform:uppercase">Saved</span>
+</button>
+</div>
+</div>
+</x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;pinnedSpot&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:4,&quot;min&quot;:1,&quot;max&quot;:9,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Defaults&quot;}}">
+const DOWS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const APP_VERSION = "1.2.0";
+const RELEASE_API = "https://api.github.com/repos/LooseBoltStudio/Resources/releases/latest";
+const RELEASES_URL = "https://github.com/LooseBoltStudio/Resources/releases";
+const LOCAL_SCHEDULE_URL = "uploads/beaumont-assignment-schedule.csv";
+const REMOTE_SCHEDULE_URL = "https://raw.githubusercontent.com/LooseBoltStudio/Resources/main/work-resources/schedules/beaumont-assignment-schedule/jobs.csv";
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const J = (location, id, craft, crew, start, days, notes) => ({ location, id, craft, crew, start, days, notes, workday: "5/12's" });
+const JOBS = [];
+let CURRENT_SCHEDULE_CSV = "";
+const EMPTY_JOB = J("","Loading…","",0,"",["—","—","—","—","—","—","—"],"Schedule data is loading.");
+const parseCSV = (text) => {
+  const rows = []; let row = [], cell = "", quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], next = text[i + 1];
+    if (c === '"' && quoted && next === '"') { cell += '"'; i++; continue; }
+    if (c === '"') { quoted = !quoted; continue; }
+    if (c === ',' && !quoted) { row.push(cell); cell = ""; continue; }
+    if ((c === '\n' || c === '\r') && !quoted) {
+      if (c === '\r' && next === '\n') i++;
+      row.push(cell); cell = ""; if (row.some(v => v.trim())) rows.push(row); row = []; continue;
+    }
+    cell += c;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  const headers = rows.shift() || [];
+  return rows.map(values => Object.fromEntries(headers.map((h, i) => [h, values[i] || ""])));
+};
+const jobsFromCSV = (text) => parseCSV(text).map(r => J(
+  r.location_group, r.job_id, r.craft, Number(r.crew_count || 0), r.starting_location,
+  [r.Monday,r.Tuesday,r.Wednesday,r.Thursday,r.Friday,r.Saturday,r.Sunday], r.notes
+)).filter(j => j.id);
+const validateScheduleText = (text, currentJobs) => {
+  const required = ["location_group","job_id","craft","crew_count","starting_location","workday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","notes"];
+  const header = String(text).split(/\r?\n/, 1)[0].split(",").map(v => v.trim());
+  const missing = required.filter(name => !header.includes(name));
+  if (missing.length) throw new Error("Schedule is missing: " + missing.join(", "));
+  const jobs = jobsFromCSV(text);
+  if (jobs.length < 5) throw new Error("Schedule contains too few assignments");
+  const ids = new Set();
+  jobs.forEach(job => {
+    if (ids.has(job.id)) throw new Error("Duplicate job ID: " + job.id);
+    ids.add(job.id);
+    if (!job.location || !job.craft || !job.start || !Number.isFinite(job.crew) || job.crew < 1) throw new Error("Incomplete assignment: " + job.id);
+    job.days.forEach((value, i) => {
+      if (!/^(OFF|\d{2}:\d{2}( .+)?)$/.test(value)) throw new Error("Invalid " + DOWS[i] + " value for " + job.id);
+    });
+  });
+  const nextDate = Date.parse(effectiveDateFromJobs(jobs));
+  const currentDate = Date.parse(effectiveDateFromJobs(currentJobs || []));
+  if (Number.isFinite(nextDate) && Number.isFinite(currentDate) && nextDate < currentDate) throw new Error("Schedule effective date is older than the installed schedule");
+  return jobs;
+};
+const effectiveDateFromJobs = (jobs) => {
+  for (const j of jobs) {
+    const match = String(j.notes).match(/effective(?: Monday,)? ([A-Z][a-z]+ \d{1,2}, \d{4})/i);
+    if (match) return match[1];
+  }
+  return "date not listed";
+};
+const compareSchedules = (before, after) => {
+  if (!before.length) return [];
+  const changes = [], oldMap = Object.fromEntries(before.map(j => [j.id, j])), newMap = Object.fromEntries(after.map(j => [j.id, j]));
+  after.forEach(j => {
+    const old = oldMap[j.id];
+    if (!old) { changes.push({ type: "Added", title: j.id, note: j.location + " · " + j.craft + " · " + j.crew + " crew" }); return; }
+    const details = [];
+    DOWS.forEach((day, i) => { if (old.days[i] !== j.days[i]) details.push(day + ": " + old.days[i] + " → " + j.days[i]); });
+    if (old.craft !== j.craft) details.push("Craft: " + old.craft + " → " + j.craft);
+    if (old.crew !== j.crew) details.push("Crew: " + old.crew + " → " + j.crew);
+    if (old.start !== j.start) details.push("Location: " + old.start + " → " + j.start);
+    if (details.length) changes.push({ type: "Changed", title: j.id, note: details.join(" · ") });
+  });
+  before.forEach(j => { if (!newMap[j.id]) changes.push({ type: "Removed", title: j.id, note: j.location + " assignment is no longer in the current schedule." }); });
+  return changes;
+};
+const DOCS = [
+  { id: "midsouth", title: "BLET MidSouth Scheduled Rules Agreement", meta: "Effective March 21, 1986 · Later amendments · 2003 rewritten compilation", pages: 137, file: "midsouth.pdf", viewer: "midsouth-viewer.html" },
+  { id: "peb250", title: "CPKC-BLET PEB 250 Agreement", meta: "Arbitration award establishing Articles V, VI, and VII terms · October 14, 2024", pages: 20, file: "peb250.pdf", viewer: "peb250-viewer.html" },
+  { id: "nyd", title: "New York Dock Section 4 Implementing Agreement", meta: "CPKC-BLET arbitration award under the New York Dock protective conditions · January 16, 2026", pages: 22, file: "nyd.pdf", viewer: "nyd-viewer.html" }
+];
+const TODAY = new Date();
+TODAY.setHours(0, 0, 0, 0);
+const ANCHOR = Date.UTC(2026, 0, 1);
+const dayNum = (d) => Math.round((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - ANCHOR) / 86400000);
+// Calibrated so Spot 1 (XEN1B) is off Aug 17-18, 2026; each higher spot shifts one day earlier.
+// Official GM Notice No. 10 matrix: Turn 1 starts Jan 5-6, and each following
+// turn's two rest days advance by two days. Turns repeat every eight positions.
+const isOff = (spot, d) => {
+  if (d.getFullYear() !== 2026) return false;
+  const turn = ((spot - 1) % 8 + 8) % 8;
+  const p = ((dayNum(d) - 4 - (turn * 2)) % 8 + 8) % 8;
+  return p === 0 || p === 1;
+};
+const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+
+class Component extends DCLogic {
+  state = { stack: ["home"], query: "", loc: "All", spot: null, month: TODAY.getMonth(), year: TODAY.getFullYear(), jobId: null, docId: null, page: 1, favorites: [], recentDocs: [], savedTick: 0, theme: "system", updateChecking: false, updateStatus: "Checking GitHub for the latest release…", updateBadge: "Checking", latestVersion: "", latestUrl: "", releaseNotes: "", lastChecked: "", hasUpdate: false,
+    scheduleChecking: true, scheduleEffective: "Loading assignment schedule…", scheduleStatus: "Opening the offline copy", scheduleChanges: [], hasPreviousSchedule: false, historyStatus: "No previous schedule has been saved yet.",
+    textSize: "normal", highContrast: false, backupStatus: "No backup copied during this session.",
+    myKind: "xen", mySpot: null, myJob: "LB07" };
+
+  componentDidMount() {
+    window.railroadBack = () => this.handleHardwareBack();
+    try {
+      const saved = JSON.parse(localStorage.getItem("mrr.assignment") || "null");
+      if (saved && saved.myKind) this.setState(saved);
+      const library = JSON.parse(localStorage.getItem("rr.library") || "null");
+      if (library) this.setState({ favorites: library.favorites || [], recentDocs: library.recentDocs || [] });
+      const theme = localStorage.getItem("rr.theme") || "system";
+      this.setState({ theme });
+      this.applyTheme(theme);
+      const textSize = localStorage.getItem("rr.textSize") || "normal";
+      const highContrast = localStorage.getItem("rr.highContrast") === "true";
+      const savedChanges = JSON.parse(localStorage.getItem("rr.scheduleChanges") || "[]");
+      const hasPreviousSchedule = !!localStorage.getItem("rr.schedulePrevious");
+      this.setState({ textSize, highContrast, scheduleChanges: savedChanges, hasPreviousSchedule, historyStatus: hasPreviousSchedule ? "A previous schedule is available if you need to roll back." : "No previous schedule has been saved yet." });
+      this.applyAccessibility(textSize, highContrast);
+    } catch (e) {}
+    this.loadScheduleData(false);
+    this.checkForUpdates();
+  }
+  applyScheduleText(text, status, checked, allowOlder) {
+    const jobs = validateScheduleText(text, allowOlder ? [] : JOBS);
+    JOBS.splice(0, JOBS.length, ...jobs);
+    CURRENT_SCHEDULE_CSV = text;
+    const effective = effectiveDateFromJobs(jobs);
+    this.setState({
+      scheduleChecking: false,
+      scheduleEffective: "Assignments effective " + effective,
+      scheduleStatus: status + (checked ? " · checked " + new Date(checked).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "")
+    });
+  }
+  async loadScheduleData(manual) {
+    this.setState({ scheduleChecking: true, scheduleStatus: manual ? "Checking GitHub for schedule changes…" : "Opening the offline copy" });
+    if (!JOBS.length) {
+      try {
+        const local = await fetch(LOCAL_SCHEDULE_URL, { cache: "no-store" });
+        if (!local.ok) throw new Error("Offline schedule returned " + local.status);
+        this.applyScheduleText(await local.text(), "Built into the app · available offline", null);
+      } catch (e) {}
+      try {
+        const cached = JSON.parse(localStorage.getItem("rr.scheduleCache") || "null");
+        if (cached && cached.csv) this.applyScheduleText(cached.csv, "Using the last saved GitHub schedule", cached.checked);
+      } catch (e) {}
+    }
+    try {
+      const remote = await fetch(REMOTE_SCHEDULE_URL, { cache: "no-store" });
+      if (!remote.ok) throw new Error("GitHub returned " + remote.status);
+      const csv = await remote.text();
+      const remoteJobs = validateScheduleText(csv, JOBS);
+      const changed = String(csv).trim() !== String(CURRENT_SCHEDULE_CSV).trim();
+      const changes = changed ? compareSchedules(JOBS, remoteJobs) : this.state.scheduleChanges;
+      const checked = Date.now();
+      if (changed && CURRENT_SCHEDULE_CSV) {
+        try { localStorage.setItem("rr.schedulePrevious", JSON.stringify({ csv: CURRENT_SCHEDULE_CSV, savedAt: checked })); } catch (e) {}
+      }
+      this.applyScheduleText(csv, "Current GitHub schedule", checked);
+      this.setState({ scheduleChanges: changes, hasPreviousSchedule: changed ? true : this.state.hasPreviousSchedule, historyStatus: changed ? "Previous schedule saved automatically before this update." : this.state.historyStatus });
+      try {
+        localStorage.setItem("rr.scheduleCache", JSON.stringify({ csv, checked }));
+        if (changed) localStorage.setItem("rr.scheduleChanges", JSON.stringify(changes));
+      } catch (e) {}
+    } catch (error) {
+      this.setState({
+        scheduleChecking: false,
+        scheduleStatus: JOBS.length ? "Offline · using the last available schedule" : "Schedule unavailable · reconnect and try again"
+      });
+    }
+  }
+  restorePreviousSchedule() {
+    try {
+      const previous = JSON.parse(localStorage.getItem("rr.schedulePrevious") || "null");
+      if (!previous || !previous.csv) throw new Error("No previous schedule");
+      const oldJobs = JOBS.slice();
+      validateScheduleText(previous.csv, []);
+      const current = CURRENT_SCHEDULE_CSV;
+      this.applyScheduleText(previous.csv, "Previous schedule restored", Date.now(), true);
+      const changes = compareSchedules(oldJobs, JOBS);
+      localStorage.setItem("rr.scheduleCache", JSON.stringify({ csv: previous.csv, checked: Date.now() }));
+      localStorage.setItem("rr.schedulePrevious", JSON.stringify({ csv: current, savedAt: Date.now() }));
+      localStorage.setItem("rr.scheduleChanges", JSON.stringify(changes));
+      this.setState({ scheduleChanges: changes, hasPreviousSchedule: true, historyStatus: "Previous schedule restored. The schedule you replaced is still available for another rollback." });
+    } catch (e) { this.setState({ historyStatus: "A previous schedule could not be restored." }); }
+  }
+  handleHardwareBack() {
+    if (this.state.stack.length <= 1) return false;
+    this.setState(st => ({ stack: st.stack.slice(0, -1) }));
+    return true;
+  }
+  applyAccessibility(textSize, highContrast) {
+    document.documentElement.setAttribute("data-contrast", highContrast ? "high" : "standard");
+    if (window.RailroadNative && window.RailroadNative.setTextZoom) window.RailroadNative.setTextZoom(textSize === "large" ? 115 : 100);
+  }
+  setTextSize(textSize) {
+    this.setState({ textSize });
+    try { localStorage.setItem("rr.textSize", textSize); } catch (e) {}
+    this.applyAccessibility(textSize, this.state.highContrast);
+  }
+  toggleHighContrast() {
+    const highContrast = !this.state.highContrast;
+    this.setState({ highContrast });
+    try { localStorage.setItem("rr.highContrast", String(highContrast)); } catch (e) {}
+    this.applyAccessibility(this.state.textSize, highContrast);
+  }
+  backupPayload() {
+    const storage = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if ((key.startsWith("rr.") || key.startsWith("mrr.")) && key !== "rr.scheduleCache") storage[key] = localStorage.getItem(key);
+    }
+    return JSON.stringify({ app: "Railroad Resources", version: 1, created: new Date().toISOString(), storage });
+  }
+  async copyBackup() {
+    const value = this.backupPayload();
+    try {
+      await navigator.clipboard.writeText(value);
+      this.setState({ backupStatus: "Backup copied. Save it in Notes, email, or another safe place." });
+    } catch (e) {
+      window.prompt("Copy this backup code and save it somewhere safe:", value);
+      this.setState({ backupStatus: "Backup code opened for copying." });
+    }
+  }
+  restoreBackup() {
+    const value = window.prompt("Paste your Railroad Resources backup code:");
+    if (!value) return;
+    try {
+      const parsed = JSON.parse(value);
+      if (!parsed || parsed.app !== "Railroad Resources" || !parsed.storage) throw new Error("Invalid backup");
+      Object.keys(parsed.storage).forEach(key => localStorage.setItem(key, parsed.storage[key]));
+      this.setState({ backupStatus: "Backup restored. Reloading your saved settings…" });
+      setTimeout(() => location.reload(), 350);
+    } catch (e) { this.setState({ backupStatus: "That backup code could not be read." }); }
+  }
+  shareAssignment(job) {
+    const lines = [job.id + " — " + job.location, job.craft + " · " + job.crew + " crew · starts " + job.start, ""];
+    DOWS.forEach((day, i) => lines.push(day + ": " + job.days[i]));
+    lines.push("", "Assignments effective " + effectiveDateFromJobs(JOBS), "Verify against current notices and local instructions.");
+    const text = lines.join("\n");
+    if (window.RailroadNative && window.RailroadNative.shareText) window.RailroadNative.shareText(job.id + " assignment", text);
+    else navigator.clipboard.writeText(text).catch(() => window.prompt("Copy assignment:", text));
+  }
+  applyTheme(theme) {
+    const dark = theme === "dark" || (theme === "system" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+  }
+  setTheme(theme) {
+    this.setState({ theme });
+    this.applyTheme(theme);
+    try { localStorage.setItem("rr.theme", theme); } catch (e) {}
+  }
+  versionParts(value) {
+    return String(value || "0").replace(/^v/i, "").split(/[.-]/).slice(0, 3).map(n => parseInt(n, 10) || 0);
+  }
+  isNewerVersion(candidate, current) {
+    const a = this.versionParts(candidate), b = this.versionParts(current);
+    for (let i = 0; i < 3; i++) { if (a[i] !== b[i]) return a[i] > b[i]; }
+    return false;
+  }
+  async checkForUpdates() {
+    this.setState({ updateChecking: true, updateStatus: "Checking GitHub for the latest release…", updateBadge: "Checking" });
+    try {
+      const response = await fetch(RELEASE_API, { headers: { "Accept": "application/vnd.github+json" }, cache: "no-store" });
+      if (!response.ok) throw new Error("GitHub returned " + response.status);
+      const release = await response.json();
+      const latestVersion = String(release.tag_name || "").replace(/^v/i, "");
+      const asset = (release.assets || []).find(a => a.name === "Railroad-Resources.apk");
+      const hasUpdate = this.isNewerVersion(latestVersion, APP_VERSION) && !!asset;
+      this.setState({
+        updateChecking: false, hasUpdate, latestVersion,
+        latestUrl: asset ? asset.browser_download_url : (release.html_url || RELEASES_URL),
+        releaseNotes: String(release.body || "See GitHub for release details.").slice(0, 700),
+        updateBadge: hasUpdate ? "Update available" : "Up to date",
+        updateStatus: hasUpdate ? "Version " + latestVersion + " is ready to install." : "You have the latest public version.",
+        lastChecked: "Last checked " + new Date().toLocaleString()
+      });
+    } catch (error) {
+      this.setState({ updateChecking: false, updateBadge: "Offline", updateStatus: "Could not check for updates. Your installed app still works offline.", lastChecked: "Try again when you have an internet connection." });
+    }
+  }
+  saveMine(patch) {
+    this.setState(patch);
+    try {
+      const s = { myKind: this.state.myKind, mySpot: this.state.mySpot, myJob: this.state.myJob, ...patch };
+      localStorage.setItem("mrr.assignment", JSON.stringify(s));
+    } catch (e) {}
+  }
+  saveLibrary(patch) {
+    this.setState(patch);
+    try {
+      const next = { favorites: this.state.favorites, recentDocs: this.state.recentDocs, ...patch };
+      localStorage.setItem("rr.library", JSON.stringify(next));
+    } catch (e) {}
+  }
+  toggleFavorite(id) {
+    const favorites = this.state.favorites.includes(id) ? this.state.favorites.filter(x => x !== id) : this.state.favorites.concat([id]);
+    this.saveLibrary({ favorites });
+  }
+  openDocument(id) {
+    const recentDocs = [id].concat(this.state.recentDocs.filter(x => x !== id)).slice(0, 3);
+    this.saveLibrary({ recentDocs });
+    this.push("reader", { docId: id, page: 1 });
+  }
+  readBookmarks() {
+    const items = [];
+    DOCS.forEach(doc => {
+      try {
+        const pages = JSON.parse(localStorage.getItem("rr.bookmarks." + doc.file) || "[]");
+        const labels = JSON.parse(localStorage.getItem("rr.bookmarkLabels." + doc.file) || "{}");
+        pages.forEach(page => items.push({ doc, page, label: labels[page] || "" }));
+      } catch (e) {}
+    });
+    return items;
+  }
+  openBookmark(doc, page) {
+    try { localStorage.setItem("rr.lastpage." + doc.file, String(page)); } catch (e) {}
+    this.openDocument(doc.id);
+  }
+  setBookmarkLabel(file, page, label) {
+    try {
+      const key = "rr.bookmarkLabels." + file;
+      const labels = JSON.parse(localStorage.getItem(key) || "{}");
+      labels[page] = label;
+      localStorage.setItem(key, JSON.stringify(labels));
+      this.setState(st => ({ savedTick: st.savedTick + 1 }));
+    } catch (e) {}
+  }
+  removeBookmark(file, page) {
+    try {
+      const key = "rr.bookmarks." + file;
+      const pages = JSON.parse(localStorage.getItem(key) || "[]").filter(p => Number(p) !== Number(page));
+      localStorage.setItem(key, JSON.stringify(pages));
+      this.setState(st => ({ savedTick: st.savedTick + 1 }));
+    } catch (e) {}
+  }
+
+  get mySpot() { return this.state.mySpot ?? this.props.pinnedSpot ?? 4; }
+  get spot() { return this.state.spot ?? this.mySpot; }
+  screen() { return this.state.stack[this.state.stack.length - 1]; }
+  push(s, patch) { this.setState(st => ({ stack: st.stack.concat([s]), ...(patch || {}) })); }
+  reset(s) { this.setState({ stack: [s] }); }
+
+  renderVals() {
+    const screen = this.screen();
+    const spot = this.spot;
+    const titles = {
+      home: ["Work resource library", "Resources"],
+      picker: ["Set who you are", "My assignment"],
+      schedules: ["Schedule library", "Schedules"],
+      jobs: ["Job listings · Effective Aug. 24", "Beaumont Division"],
+      jobmatrix: ["Weekly assigned rest days", "Assigned-Job Matrix"],
+      changes: ["Schedule update comparison", "What Changed"],
+      job: ["Assignment detail", this.state.jobId || "Job"],
+      calendar: ["Beaumont extra board", this.state.year + " XEN Off Days"],
+      contracts: ["Available documents", "File library"],
+      reader: ["Browser reader", (DOCS.find(d => d.id === this.state.docId) || DOCS[0]).title]
+      ,saved: ["Offline collection", "Saved Items"]
+      ,options: ["App preferences", "Options"]
+      ,help: ["Guide, sources, and privacy", "Help & About"]
+    };
+    const [kicker, title] = titles[screen];
+
+    const q = this.state.query.trim().toLowerCase();
+    const filtered = JOBS.filter(j =>
+      (this.state.loc === "All" || j.location === this.state.loc) &&
+      (!q || (j.id + " " + j.craft + " " + j.location + " " + j.notes).toLowerCase().includes(q)));
+
+    const tint = (on) => on ? "var(--color-accent)" : "transparent";
+    const chip = (label, active, pick) => ({
+      label, pick,
+      bg: active ? "var(--color-accent)" : "transparent",
+      fg: active ? "var(--color-bg)" : "var(--color-text)",
+      bd: active ? "var(--color-accent)" : "var(--color-divider)"
+    });
+
+    // month grid
+    const y = this.state.year, m = this.state.month;
+    const first = new Date(y, m, 1);
+    const lead = (first.getDay() + 6) % 7;
+    const dim = new Date(y, m + 1, 0).getDate();
+    const cells = [];
+    for (let i = 0; i < lead; i++) cells.push({ label: "", bg: "transparent", fg: "transparent", bd: "transparent" });
+    for (let d = 1; d <= dim; d++) {
+      const date = new Date(y, m, d);
+      const off = isOff(spot, date);
+      const today = sameDay(date, TODAY);
+      cells.push({
+        label: String(d),
+        bg: off ? "var(--color-accent)" : "transparent",
+        fg: off ? "var(--color-bg)" : "var(--color-text)",
+        bd: today ? "var(--color-text)" : "var(--color-divider)"
+      });
+    }
+
+    const kindIsJob = this.state.myKind === "job";
+    const myJob = JOBS.find(j => j.id === this.state.myJob) || JOBS[0] || EMPTY_JOB;
+    const dayOf = (n) => new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate() + n);
+    const statusFor = (d) => {
+      if (kindIsJob) { const v = myJob.days[(d.getDay() + 6) % 7]; return { off: v === "OFF", text: v === "OFF" ? "OFF" : v.split(" ")[0] }; }
+      const off = isOff(this.mySpot, d);
+      return { off, text: off ? "OFF" : "On call" };
+    };
+    const nextDays = [1, 2, 3, 4].map(n => {
+      const d = dayOf(n), s = statusFor(d);
+      return {
+        dow: DOWS[(d.getDay() + 6) % 7], day: d.getDate(), status: s.text,
+        bg: s.off ? "var(--color-accent)" : "transparent",
+        fg: s.off ? "var(--color-bg)" : "var(--color-text)",
+        bd: s.off ? "var(--color-accent)" : "var(--color-divider)"
+      };
+    });
+    let nextOffLabel = "—";
+    for (let i = 1; i < 40; i++) { const d = dayOf(i); if (statusFor(d).off) { nextOffLabel = DOWS[(d.getDay() + 6) % 7] + " " + MONTHS[d.getMonth()].slice(0, 3) + " " + d.getDate(); break; } }
+    const todayS = statusFor(TODAY);
+    const job = JOBS.find(j => j.id === this.state.jobId) || JOBS[0] || EMPTY_JOB;
+    const doc = DOCS.find(d => d.id === this.state.docId) || DOCS[0];
+    const tabFg = (on) => on ? "var(--color-bg)" : "color-mix(in srgb, var(--color-text) 62%, transparent)";
+    const tabBg = (on) => on ? "var(--color-accent)" : "transparent";
+    const onSched = ["schedules", "changes", "jobs", "jobmatrix", "job", "calendar"].includes(screen);
+    const onDocs = ["contracts", "reader"].includes(screen);
+    const onSaved = screen === "saved";
+    const bookmarkItems = this.readBookmarks();
+    const favoriteDocs = this.state.favorites.map(id => DOCS.find(d => d.id === id)).filter(Boolean);
+    const recentDocs = this.state.recentDocs.map(id => DOCS.find(d => d.id === id)).filter(Boolean);
+
+    return {
+      kicker, title,
+      canBack: this.state.stack.length > 1,
+      back: () => this.setState(st => ({ stack: st.stack.slice(0, -1) })),
+      isHome: screen === "home", isSchedules: screen === "schedules", isChanges: screen === "changes", isJobs: screen === "jobs",
+      isJobMatrix: screen === "jobmatrix", isJob: screen === "job", isCalendar: screen === "calendar", isContracts: screen === "contracts",
+      isReader: screen === "reader", isSaved: screen === "saved", isOptions: screen === "options", isHelp: screen === "help",
+      goHome: () => this.reset("home"),
+      goSchedules: () => (onSched ? this.reset("schedules") : this.push("schedules")),
+      goContracts: () => (onDocs ? this.reset("contracts") : this.push("contracts")),
+      goSaved: () => (onSaved ? this.reset("saved") : this.push("saved")),
+      goJobs: () => this.push("jobs"),
+      goJobMatrix: () => this.push("jobmatrix"),
+      goChanges: () => this.push("changes"),
+      goCalendar: () => this.push("calendar"),
+      goOptions: () => (screen === "options" ? null : this.push("options")),
+      goHelp: () => this.push("help"),
+      scheduleEffective: this.state.scheduleEffective,
+      scheduleStatus: this.state.scheduleStatus,
+      scheduleButton: this.state.scheduleChecking ? "Checking…" : "Check now",
+      refreshSchedule: () => this.loadScheduleData(true),
+      noScheduleChanges: this.state.scheduleChanges.length === 0,
+      scheduleChanges: this.state.scheduleChanges,
+      hasPreviousSchedule: this.state.hasPreviousSchedule,
+      historyStatus: this.state.historyStatus,
+      restorePreviousSchedule: () => this.restorePreviousSchedule(),
+      themeOptions: [
+        { id: "light", label: "Light", note: "Warm ivory background", icon: "☀", pick: () => this.setTheme("light") },
+        { id: "dark", label: "Dark", note: "Low-glare charcoal background", icon: "☾", pick: () => this.setTheme("dark") },
+        { id: "system", label: "Follow phone", note: "Match the Android appearance setting", icon: "◐", pick: () => this.setTheme("system") }
+      ].map((o,i) => ({ ...o, rule: i ? "var(--color-divider)" : "transparent", bg: this.state.theme === o.id ? "var(--color-accent)" : "transparent", fg: this.state.theme === o.id ? "var(--color-bg)" : "var(--color-text)", mark: this.state.theme === o.id ? "✓" : "" })),
+      useNormalText: () => this.setTextSize("normal"),
+      useLargeText: () => this.setTextSize("large"),
+      normalTextBg: this.state.textSize === "normal" ? "var(--color-accent)" : "transparent",
+      normalTextFg: this.state.textSize === "normal" ? "var(--color-bg)" : "var(--color-text)",
+      largeTextBg: this.state.textSize === "large" ? "var(--color-accent)" : "transparent",
+      largeTextFg: this.state.textSize === "large" ? "var(--color-bg)" : "var(--color-text)",
+      toggleContrast: () => this.toggleHighContrast(),
+      contrastLabel: this.state.highContrast ? "High contrast on" : "Turn on high contrast",
+      copyBackup: () => this.copyBackup(),
+      restoreBackup: () => this.restoreBackup(),
+      backupStatus: this.state.backupStatus,
+      currentVersion: APP_VERSION,
+      updateChecking: this.state.updateChecking,
+      updateBadge: this.state.updateBadge,
+      updateStatus: this.state.updateStatus,
+      lastChecked: this.state.lastChecked,
+      hasUpdate: this.state.hasUpdate,
+      latestVersion: this.state.latestVersion,
+      releaseNotes: this.state.releaseNotes,
+      checkButton: this.state.updateChecking ? "Checking…" : "Check for updates",
+      checkForUpdates: () => this.checkForUpdates(),
+      downloadUpdate: () => { if (this.state.latestUrl) window.location.href = this.state.latestUrl; },
+      viewReleases: () => { window.location.href = RELEASES_URL; },
+      openResourcesSite: () => { window.location.href = "https://looseboltstudio.github.io/Resources/"; },
+      noBookmarks: bookmarkItems.length === 0,
+      noFavorites: favoriteDocs.length === 0,
+      noRecent: recentDocs.length === 0,
+      savedPages: bookmarkItems.map(item => ({
+        title: item.label || item.doc.title, label: item.label, page: item.page,
+        open: () => this.openBookmark(item.doc, item.page),
+        rename: (e) => this.setBookmarkLabel(item.doc.file, item.page, e.target.value),
+        remove: () => this.removeBookmark(item.doc.file, item.page)
+      })),
+      savedFavorites: favoriteDocs.map(d => ({ ...d, open: () => this.openDocument(d.id) })),
+      savedRecent: recentDocs.map(d => ({ ...d, open: () => this.openDocument(d.id) })),
+
+      todayLabel: DOWS[(TODAY.getDay() + 6) % 7] + " " + MONTHS[TODAY.getMonth()] + " " + TODAY.getDate(),
+      todayStatus: todayS.off ? "Assigned off day" : (kindIsJob ? todayS.text + " start" : "On call"),
+      todaySub: todayS.off ? "next off day after this: " + nextOffLabel : "next off day " + nextOffLabel,
+      nextDays,
+      myLabel: kindIsJob ? myJob.id : "XEN" + this.mySpot + "B",
+      mySub: kindIsJob ? myJob.craft + " · " + myJob.location + " · " + myJob.workday : "Extra board turn " + this.mySpot + " · 6 & 2",
+      myDetails: kindIsJob ? "Starts at " + myJob.start + " · regular rest days: " + DOWS.filter((d, i) => myJob.days[i] === "OFF").join(" and ") : "Open your turn's monthly off-day calendar.",
+      openMyAssignment: () => kindIsJob ? this.push("job", { jobId: myJob.id }) : this.push("calendar", { spot: this.mySpot }),
+      isPicker: screen === "picker",
+      goPicker: () => this.push("picker"),
+      kindIsJob, kindIsXen: !kindIsJob,
+      pickKindJob: () => this.saveMine({ myKind: "job" }),
+      pickKindXen: () => this.saveMine({ myKind: "xen" }),
+      segJobBg: kindIsJob ? "var(--color-accent)" : "transparent",
+      segJobFg: kindIsJob ? "var(--color-bg)" : "var(--color-text)",
+      segXenBg: kindIsJob ? "transparent" : "var(--color-accent)",
+      segXenFg: kindIsJob ? "var(--color-text)" : "var(--color-bg)",
+      jobOptions: JOBS.map((j, i) => {
+        const on = kindIsJob && myJob.id === j.id;
+        return {
+          id: j.id, meta: j.location + " · " + j.craft + " · " + j.crew + " crew",
+          mark: on ? "Selected" : j.days.filter(d => d === "OFF").length + " off",
+          rule: i === 0 ? "transparent" : "var(--color-divider)",
+          bg: on ? "var(--color-accent)" : "transparent",
+          fg: on ? "var(--color-bg)" : "var(--color-text)",
+          pick: () => this.saveMine({ myKind: "job", myJob: j.id })
+        };
+      }),
+      spotOptions: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => {
+        const on = !kindIsJob && this.mySpot === n;
+        return {
+          label: "XEN" + n + "B", turn: n,
+          bg: on ? "var(--color-accent)" : "transparent",
+          fg: on ? "var(--color-bg)" : "var(--color-text)",
+          bd: on ? "var(--color-accent)" : "var(--color-divider)",
+          pick: () => this.saveMine({ myKind: "xen", mySpot: n, spot: n })
+        };
+      }),
+
+      query: this.state.query,
+      onQuery: (e) => this.setState({ query: e.target.value }),
+      locChips: ["All", "Beaumont", "Port Arthur", "Mossville", "Leesville"].map(l =>
+        chip(l, this.state.loc === l, () => this.setState({ loc: l }))),
+      jobCount: filtered.length,
+      jobs: filtered.map((j, i) => ({
+        id: j.id, craft: j.craft, loc: j.location, crew: j.crew,
+        summary: j.days.filter(d => d === "OFF").length + " off days · " + j.workday,
+        today: j.days[0] === "OFF" ? "OFF" : j.days[0].split(" ")[0],
+        timeColor: j.days[0] === "OFF" ? "color-mix(in srgb, var(--color-text) 45%, transparent)" : "var(--color-text)",
+        rule: i === 0 ? "transparent" : "var(--color-divider)",
+        open: () => this.push("job", { jobId: j.id })
+      })),
+      matrixLocChips: ["All", "Beaumont", "Port Arthur", "Mossville", "Leesville"].map(l =>
+        chip(l, this.state.loc === l, () => this.setState({ loc: l }))),
+      matrixDows: DOWS,
+      matrixRows: JOBS.filter(j => this.state.loc === "All" || j.location === this.state.loc).map((j, i) => ({
+        id: j.id, location: j.location, rule: i === 0 ? "transparent" : "var(--color-divider)",
+        open: () => this.push("job", { jobId: j.id }),
+        days: j.days.map(v => ({
+          label: v === "OFF" ? "OFF" : v.split(" ")[0],
+          bg: v === "OFF" ? "var(--color-accent)" : "transparent",
+          fg: v === "OFF" ? "var(--color-bg)" : "var(--color-text)",
+          bd: v === "OFF" ? "var(--color-accent)" : "var(--color-divider)"
+        }))
+      })),
+      job: {
+        craft: job.craft, crew: job.crew, workday: job.workday, start: job.start, notes: job.notes,
+        week: DOWS.map((dow, i) => ({
+          dow,
+          value: job.days[i],
+          color: job.days[i] === "OFF" ? "color-mix(in srgb, var(--color-text) 45%, transparent)" : "var(--color-text)"
+        }))
+      },
+
+      setThisJob: () => this.saveMine({ myKind: "job", myJob: job.id }),
+      setThisJobLabel: (kindIsJob && myJob.id === job.id) ? "This is my assignment" : "Set " + job.id + " as my assignment",
+      shareJob: () => this.shareAssignment(job),
+
+      dows: DOWS.map(d => d.slice(0, 1)),
+      cells,
+      monthLabel: MONTHS[m] + " " + y,
+      calendarYear: y,
+      spotLabel: "Spot " + spot + " — XEN" + spot + "B",
+      spots: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => chip("XEN" + n + "B", spot === n, () => this.setState({ spot: n }))),
+      prevMonth: () => this.setState(st => st.month === 0 ? { month: 11, year: st.year - 1 } : { month: st.month - 1 }),
+      nextMonth: () => this.setState(st => st.month === 11 ? { month: 0, year: st.year + 1 } : { month: st.month + 1 }),
+      tintUnused: tint,
+
+      docs: DOCS.map(d => ({ ...d,
+        open: () => this.openDocument(d.id),
+        star: this.state.favorites.includes(d.id) ? "★" : "☆",
+        recent: this.state.recentDocs.includes(d.id) ? "Recently viewed" : "",
+        toggleFavorite: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.toggleFavorite(d.id); }
+      })).sort((a,b) => Number(this.state.favorites.includes(b.id)) - Number(this.state.favorites.includes(a.id))),
+      doc, page: this.state.page,
+      prevPage: () => this.setState(st => ({ page: Math.max(1, st.page - 1) })),
+      nextPage: () => this.setState(st => ({ page: Math.min(doc.pages, st.page + 1) })),
+
+      tabHome: tabFg(screen === "home"), tabHomeBg: tabBg(screen === "home"),
+      tabSched: tabFg(onSched), tabSchedBg: tabBg(onSched),
+      tabDoc: tabFg(onDocs), tabDocBg: tabBg(onDocs),
+      tabSaved: tabFg(onSaved), tabSavedBg: tabBg(onSaved)
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,15 +1,22 @@
 (() => {
+  document.title = document.title.replace('My Random Resources', 'Railroad Resources');
   const currentScript = document.currentScript;
   if (currentScript?.src && !document.querySelector('link[data-clean-theme]')) {
     const themeLink = document.createElement('link');
     themeLink.rel = 'stylesheet';
-    themeLink.href = new URL('clean-theme.css', currentScript.src).href;
+    themeLink.href = new URL('clean-theme.css?v=5', currentScript.src).href;
     themeLink.dataset.cleanTheme = 'true';
     document.head.appendChild(themeLink);
   }
 
   const menuButton = document.querySelector('.menu-button');
   const navigation = document.querySelector('.primary-nav');
+
+  document.querySelectorAll('.brand-copy').forEach((brand) => {
+    brand.innerHTML = '<small>Work resource library</small><strong>Railroad Resources</strong>';
+  });
+  document.querySelectorAll('.footer-brand strong').forEach((brand) => { brand.textContent = 'Railroad Resources'; });
+  document.querySelectorAll('.footer-brand span').forEach((tagline) => { tagline.textContent = 'Independent reference library by Loose Bolt Studio.'; });
 
   if (menuButton && navigation) {
     menuButton.addEventListener('click', () => {

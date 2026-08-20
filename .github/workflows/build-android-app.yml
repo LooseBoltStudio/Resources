@@ -93,7 +93,7 @@ jobs:
           if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
             RELEASE_TAG="$GITHUB_REF_NAME"
           else
-            RELEASE_TAG="v1.2.0"
+            RELEASE_TAG="v1.2.0-syncfix"
           fi
-          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --title "Railroad Resources $RELEASE_TAG" --generate-notes
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --title "Railroad Resources 1.2.0 Sync Fix" --notes "Fixes live schedule and app-update checks in the Android app while keeping the full offline schedule available."
           gh release upload "$RELEASE_TAG" Railroad-Resources.apk --clobber

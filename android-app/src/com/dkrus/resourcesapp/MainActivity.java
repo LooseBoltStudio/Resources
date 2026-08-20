@@ -13,10 +13,21 @@ import android.webkit.WebChromeClient;
 import android.webkit.ConsoleMessage;
 import android.webkit.JavascriptInterface;
 import android.util.Log;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends Activity {
+    private static final String APP_ASSET_PREFIX = "https://appassets.androidplatform.net/assets/";
+    private static final String REMOTE_SCHEDULE_URL = "https://raw.githubusercontent.com/LooseBoltStudio/Resources/main/work-resources/schedules/beaumont-assignment-schedule/jobs.csv";
+    private static final String RELEASE_API_URL = "https://api.github.com/repos/LooseBoltStudio/Resources/releases/latest";
+
     private WebView webView;
 
     private class AppBridge {
@@ -42,6 +53,66 @@ public class MainActivity extends Activity {
                     startActivity(Intent.createChooser(share, "Share from Railroad Resources"));
                 }
             });
+        }
+    }
+
+    private WebResourceResponse remoteResponse(String url, String mimeType) {
+        HttpURLConnection connection = null;
+        try {
+            connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setConnectTimeout(10000);
+            connection.setReadTimeout(15000);
+            connection.setUseCaches(false);
+            connection.setRequestProperty("User-Agent", "Railroad-Resources-Android/1.2");
+            if ("application/json".equals(mimeType)) {
+                connection.setRequestProperty("Accept", "application/vnd.github+json");
+            } else {
+                connection.setRequestProperty("Accept", "text/csv,text/plain;q=0.9,*/*;q=0.8");
+            }
+
+            int status = connection.getResponseCode();
+            InputStream source = status >= 200 && status < 400
+                    ? connection.getInputStream()
+                    : connection.getErrorStream();
+            if (source == null) throw new IOException("Remote request returned " + status);
+
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            byte[] chunk = new byte[8192];
+            int count;
+            while ((count = source.read(chunk)) != -1) buffer.write(chunk, 0, count);
+            source.close();
+
+            Map<String, String> headers = new HashMap<String, String>();
+            headers.put("Access-Control-Allow-Origin", "*");
+            headers.put("Cache-Control", "no-store, no-cache, must-revalidate");
+            headers.put("Pragma", "no-cache");
+
+            String reason = connection.getResponseMessage();
+            if (reason == null || reason.length() == 0) reason = status >= 200 && status < 400 ? "OK" : "Remote Error";
+            return new WebResourceResponse(
+                    mimeType,
+                    "UTF-8",
+                    status,
+                    reason,
+                    headers,
+                    new ByteArrayInputStream(buffer.toByteArray())
+            );
+        } catch (Exception error) {
+            Log.e("ResourcesWeb", "Remote request failed: " + url, error);
+            Map<String, String> headers = new HashMap<String, String>();
+            headers.put("Access-Control-Allow-Origin", "*");
+            headers.put("Cache-Control", "no-store");
+            byte[] message = ("Remote request failed: " + error.getMessage()).getBytes(StandardCharsets.UTF_8);
+            return new WebResourceResponse(
+                    "text/plain",
+                    "UTF-8",
+                    502,
+                    "Bad Gateway",
+                    headers,
+                    new ByteArrayInputStream(message)
+            );
+        } finally {
+            if (connection != null) connection.disconnect();
         }
     }
 
@@ -73,8 +144,13 @@ public class MainActivity extends Activity {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
-                String prefix = "https://appassets.androidplatform.net/assets/";
-                if (!url.startsWith(prefix)) return null;
+
+                // Proxy the two live GitHub calls through native networking. This avoids
+                // WebView cross-origin/CORS failures while keeping the UI itself offline-first.
+                if (REMOTE_SCHEDULE_URL.equals(url)) return remoteResponse(url, "text/csv");
+                if (RELEASE_API_URL.equals(url)) return remoteResponse(url, "application/json");
+
+                if (!url.startsWith(APP_ASSET_PREFIX)) return null;
                 String path = request.getUrl().getPath();
                 if (path.startsWith("/assets/")) path = path.substring(8);
                 try {

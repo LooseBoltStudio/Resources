@@ -596,7 +596,7 @@ a:hover{color:var(--color-accent-800)}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;pinnedSpot&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:4,&quot;min&quot;:1,&quot;max&quot;:9,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Defaults&quot;}}">
 const DOWS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-const APP_VERSION = "1.2.1";
+const APP_VERSION = "1.2.2";
 const RELEASE_API = "https://api.github.com/repos/LooseBoltStudio/Resources/releases/latest";
 const LOCAL_SCHEDULE_URL = "uploads/beaumont-assignment-schedule.csv";
 const REMOTE_SCHEDULE_URL = "https://raw.githubusercontent.com/LooseBoltStudio/Resources/main/work-resources/schedules/beaumont-assignment-schedule/jobs.csv";
@@ -749,7 +749,16 @@ class Component extends DCLogic {
       const remote = await fetch(REMOTE_SCHEDULE_URL, { cache: "no-store" });
       if (!remote.ok) throw new Error("GitHub returned " + remote.status);
       const csv = await remote.text();
-      const remoteJobs = validateScheduleText(csv, JOBS);
+      let remoteJobs;
+      try {
+        remoteJobs = validateScheduleText(csv, JOBS);
+      } catch (validationError) {
+        this.setState({
+          scheduleChecking: false,
+          scheduleStatus: JOBS.length ? "Schedule data error · using the last available schedule" : "Schedule data error · correction required"
+        });
+        return;
+      }
       const changed = String(csv).trim() !== String(CURRENT_SCHEDULE_CSV).trim();
       const changes = changed ? compareSchedules(JOBS, remoteJobs) : this.state.scheduleChanges;
       const checked = Date.now();

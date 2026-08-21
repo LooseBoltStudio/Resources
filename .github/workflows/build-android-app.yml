@@ -5,6 +5,8 @@ on:
   pull_request:
     paths:
       - "android-app/**"
+      - "scripts/validate_schedule.py"
+      - "work-resources/schedules/beaumont-assignment-schedule/jobs.csv"
       - ".github/workflows/build-android-app.yml"
   push:
     tags:
@@ -19,6 +21,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      - name: Validate assignment schedule
+        run: python3 scripts/validate_schedule.py work-resources/schedules/beaumont-assignment-schedule/jobs.csv
 
       - name: Set up Java
         uses: actions/setup-java@v4
